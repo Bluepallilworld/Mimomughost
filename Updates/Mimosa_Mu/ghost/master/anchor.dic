@@ -1,0 +1,201 @@
+//---------------------------Anchors and OnTranslate--------------------------
+
+//This .dic file is for setting up anchor words, which are links to set conversations attached to certain words automatically. It also deals with OnTranslate, which is a fairly unique function. All text goes through OnTranslate first before it displays on your ghost, which is how it knows to turn certain words into links.
+
+//Why should I care about anchor words, you ask? Or what can I use them for? Well, you can set up anchor words to easy explanations for things your ghost might talk about that might confuse your user. People they know, places they've been, pop culture references the user might not get, information about you the creator or the world the characters from, items in an item menu, basically any number of things. Anchor words can be a handy repository of information! Or just an easy way to set up some cheap jokes. The power is yours!
+
+//This file is very short, so don't worry! And if you aren't planning on using anchor words, you just have to delete a few things and you'll be done!
+
+//Make sure to read the walkthrough (http://www.ashido.com/ukagaka/walkthrough.html) for more details about how to properly format ghost dialogue!
+//I will reiterate that you should be editing these in Notepad++, and in particular, you should set the Language to C to properly highlight all the text. It will make things A LOT EASIER for you, trust me! It will also help you keep track of your brackets in case you forget some. If you click on a line with a bracket in Notepad++, it should highlight where the other bracket ends, or turn purple if there's no finishing bracket (which you should definitely fix!)
+//It will also highlight my commented lines in green, so you'll know where they are. Any line beginning with // is a commented line that the code will not read. It's just for your reference!
+
+
+//--OnTranslate
+
+//As I said above, OnTranslate filters through all the text your ghost displays and does whatever you specify to it. That doesn't have to just be turning things into links, it could be anything. This is a powerful function that can be used in a lot of creative ways I bet, but I wouldn't mess with it too much since you can pretty easily break stuff if you don't know what you're doing.
+//If you're not interested in any anchor words, delete all the lines that start with _talk = REPLACE under OnTranslate.
+
+OnTranslate
+	{
+	_talk = reference0
+ 	_talk = REPLACE(_talk, "Lint", "\_a[lint]Lint\_a")
+ 	_talk = REPLACE(_talk, "More on my half cousin?", "\_a[https://bluepallilworld.tumblr.com/post/630456726566682624/magic-color] More on my half cousin?\_a")
+ 	_talk = REPLACE(_talk, "Shine", "\_a[shine]Shine\_a")
+	_talk = REPLACE(_talk, "More on my adopted sister?", "\_a[https://creative-firebug.tumblr.com/post/625515582094180352/image-text-shine-sheher-13-cant-use-much]More on my adopted sister?\_a")
+	_talk = REPLACE(_talk, "Malignance", "\_a[malignance]Malignance\_a")
+	_talk = REPLACE(_talk, "Mal", "\_a[malignance]Mal\_a")
+	_talk = REPLACE(_talk, "More on my adopted sibling?", "\_a[https://creative-firebug.tumblr.com/post/627369765346951169/malignance-18-years-old-theythem-i-havent-quite]More on my adopted sibling\_a")
+	_talk = REPLACE(_talk, "Mynn", "\_a[mynn]Mynn\_a")
+	_talk = REPLACE(_talk, "More on my fiery friend?", "\_a[https://www.tumblr.com/bluepallilworld/631386669941227520/ok-time-to-introduce-a-new-oc]More on my fiery friend? \_a")
+	_talk = REPLACE(_talk, "Toddh", "\_a[toddh]Toddh\_a")
+	_talk = REPLACE(_talk, "More on my winged friend?", "\_a[https://bluepallilworld.tumblr.com/post/658257322703044608/say-welcome-to-toddh-name-toddh-age-146]More on my winged friend?\_a")
+	_talk = REPLACE(_talk, "Nip", "\_a[nip]Nip\_a")
+	_talk = REPLACE(_talk, "More on my nightmare-related friend?", "\_a[https://bluepallilworld.tumblr.com/post/656378942740103169/new-character-the-right-tiny-bunny-form-is]More on my nightmare-related friend?\_a")
+	_talk = REPLACE(_talk, "Fancy", "\_a[fancy]Fancy\_a")
+	_talk = REPLACE(_talk, "More on my crowned friend?", "\_a[https://bluepallilworld.tumblr.com/post/637945807488876545/you-remember-this-post-here-the-oc-that-was]More on my crowned friend?\_a")
+	_talk = REPLACE(_talk, "Vary", "\_a[vary]Vary\_a")
+	_talk = REPLACE(_talk, "More on my shapeshifter friend?", "\_a[https://bluepallilworld.tumblr.com/post/633430925932429312/ok-i-dont-think-the-family-is-big-enough-so-here]More on my shapeshifter friend?\_a")
+	_talk = REPLACE(_talk, "Shift", "\_a[shift]Shift\_a")
+	_talk = REPLACE(_talk, "Jar", "\_a[jar]Jar\_a")
+	_talk = REPLACE(_talk, "More on my friend's friend?", "\_a[https://bluepallilworld.tumblr.com/post/636409484113264641/yu-yu-i-need-to-find-a-name-for-my-au-i-cant]More on my friend's friend?\_a")
+	_talk = REPLACE(_talk, "Sigma", "\_a[sigma]Sigma\_a")
+	_talk = REPLACE(_talk, "More on my old friend?", "\_a[https://bluepallilworld.tumblr.com/post/626703772030271488/this-is-a-gift-for-ninjaf-ginganinga-xox]More on my old friend?\_a")
+	_talk = REPLACE(_talk, "Turtleduckrabbit", "\_a[https://turtleduckrabbit.tumblr.com/tagged/mimosa]Turtleduckrabbit\_a")
+	_talk = REPLACE(_talk, "Creative-firebug", "\_a[https://www.tumblr.com/creative-firebug/tagged/mimosa]Creative-firebug\_a")
+	_talk = REPLACE(_talk, "shinechermont", "\_a[https://www.tumblr.com/shinechermont]Shinechermont\_a")
+	_talk = REPLACE(_talk, "Amarald", "\_a[https://amarald.tumblr.com/tagged/mimosa]Amarald\_a")
+	_talk = REPLACE(_talk, "Dragon-tamer1", "\_a[https://www.tumblr.com/dragon-tamer-1/tagged/Mimosa]Dragon-tamer1\_a")
+	_talk = REPLACE(_talk, "Micc0ro", "\_a[https://www.tumblr.com/micc0ro/search/mimosa]Micc0ro\_a")
+	_talk = REPLACE(_talk, "Laf-e-taffy", "\_a[https://laf-e-taffy.tumblr.com/search/mimosa]Laf-e-taffy\_a")
+	_talk = REPLACE(_talk, "Star-gamerxox", "\_a[https://www.tumblr.com/star-gamerxox/tagged/Mimosa]Star-gamerxox\_a")
+	_talk = REPLACE(_talk, "Yuriyuruyuraart", "\_a[https://yuriyuruandyuraart.tumblr.com/tagged/mimosa]Yuriyuruyuraart\_a")
+	_talk = REPLACE(_talk, "Zu-is-here", "\_a[https://www.tumblr.com/zu-is-here/tagged/mimosa]Zu-is-here\_a")
+	_talk = REPLACE(_talk, "Psychomeows", "\_a[https://www.tumblr.com/psychomeows/tagged/mimosa]Psychomeows\_a")
+	_talk = REPLACE(_talk, "Ursula", "\_a[ursula]Ursula\_a")
+	_talk = REPLACE(_talk, "More on my family-shaped friend?", "\_a[https://www.tumblr.com/bluepallilworld/756510772607238144]More on my family-shaped friend?\_a")
+	_talk = REPLACE(_talk, "Milkyway", "\_a[milkyway]Milkyway\_a")
+	_talk = REPLACE(_talk, "More on my tired friend?", "\_a[https://bluepallilworld.tumblr.com/post/644005710757298176/milkyway-ref-the-drawing-of-the-left-is-by]More on my tired friend?\_a")
+	_talk = REPLACE(_talk, "Dasha", "\_a[dasha]Dasha\_a")
+	_talk = REPLACE(_talk, "More on my tall friend?", "\_a[https://bluepallilworld.tumblr.com/post/641699232133300224/hey-here-a-new-oc-dasha-name-dasha-specie]More on my tall friend?\_a")
+	_talk = REPLACE(_talk, "Slumber Cat Coffee", "\_a[slumber cat coffee]Slumber Cat Coffee\_a")
+	_talk = REPLACE(_talk, "More on this coffee shop?", "\_a[https://www.tumblr.com/blog/slumber-cat-coffee]More on this coffee shop?\_a")
+	_talk = REPLACE(_talk, "Soot", "\_a[soot]Soot\_a")
+	_talk = REPLACE(_talk, "More on my bunny goop friend?", "\_a[https://bluepallilworld.tumblr.com/post/638579341872201729/hey-got-a-new-kid-soot-soot-22th-of]More on my bunny goop friend?\_a")
+	_talk = REPLACE(_talk, "Oriana", "\_a[oriana]Oriana\_a")
+	_talk = REPLACE(_talk, "More on my 'imaginary' alternate sister?", "\_a[https://www.tumblr.com/turtleduckrabbit/625663646927863808/oriana-update-kenzie-shall-admit-the-old-info?source=share]More on my 'imaginary' alternate sister?\_a")
+	_talk = REPLACE(_talk, "Nona", "\_a[nona]Nona\_a")
+	_talk = REPLACE(_talk, "More on my peculiar friend?", "\_a[https://www.tumblr.com/bluepallilworld/659504559056683008/new-shipkids-killer-x-cross-kids]More on my peculiar friend?\_a")
+	_talk = REPLACE(_talk, "Kilm", "\_a[kilm]Kilm\_a")
+	_talk = REPLACE(_talk, "More on my face-masked friend?", "\_a[https://www.tumblr.com/bluepallilworld/659504559056683008/new-shipkids-killer-x-cross-kids]More on my peculiar friend?\_a")
+	_talk = REPLACE(_talk, "Kirpa", "\_a[kirpa]Kirpa\_a")
+	_talk = REPLACE(_talk, "More on my entertaining friend?", "\_a[https://www.tumblr.com/bluepallilworld/659504559056683008/new-shipkids-killer-x-cross-kids]More on my peculiar friend?\_a")
+	_talk = REPLACE(_talk, "Commontale", "\_a[commontale]Commontale\_a")
+	_talk = REPLACE(_talk, "More on my friend's universe?", "\_a[https://bluepallilworld.tumblr.com/post/645269328056483840/what-is-commontale]More on my friend's universe?\_a")
+
+
+
+	
+		if reference1 == "" && reference2 == "" { //send input box : no event (ref2) , no special flag (ref1)
+            EVAL('"' + REPLACE(_talk,'"','" + CHR(0x22) + "') + '"')
+        }
+        else { //event result from ghost
+            TOSTR(_talk)
+        }
+	}
+	
+	//Some brief explanation about what's going on in those REPLACE lines! Basically, the function looks through the script and looks for a defined word or set of words. In this case, it's "Anchor 1". It then replaces "Anchor 1" with the second set of text, "\_a[anchor1]Anchor 1\_a". \_a if you recall is the dialogue code for linking something, so this is linking the words Anchor 1 to something called anchor1 set up in the next function, OnAnchorSelect.
+	//This is being used to change a word into a link, but you could conceivably use this to replace any text with any other kind of text if you wanted.
+
+	
+//--OnAnchorSelect
+//OnAnchorSelect runs whenever someone clicks one of the links as specified above, or a link that begins with http://.
+
+OnAnchorSelect
+{
+	if "http://" _in_ reference0 || "https://" _in_ reference0 //checking to see if the link is a web address
+	{
+	"\j[%(reference0)]\e" // \j is a tag that will open a specified url in the user's browser of choice. This basically just tells the ghost to open the webpage stored in reference0, which would be the address that the user just clicked. I didn't get too much into \j in the walkthrough page because I have literally never used it except here.
+	}
+	else //if it's NOT a web address
+	{
+	case reference0 //case is a unique thing that only really shows up in anchor.dic, and it basically sets up reference0 for evaluation to see if matches any of the below criteria, which are all tagged with when. You can read more about this on the coding page on the walkthrough site. You can add as many things here as you want to set up above as long as you follow the basic format.
+		{
+			when "lint" //if the link is this value
+			{
+				"\0\s[0]Lint is my half cousin from another multiverse!\w8\n\ She's chaotic.\w8\n\n[half]More on my half cousin?\e"
+			}
+			when "shine" //if the link is this value
+			{
+				"\0\s[0]Shine is my adopted sister!\w8\nMalignance and her gave me a new home when I needed one!\w8\n\n[half]More on my adopted sister?\e"
+			}
+			when "malignance" //if the link is this value
+			{
+				"\0\s[0]Malignance is my adopted sister/brother/sibling!\w8\n\I was told they were a bit scary but I don't think it's true?\w8\n\n[half]More on my adopted sibling? \e"
+			}
+			when "mynn" //if the link is this value
+			{
+				"\0\s[0]Mynn is my friend!\w8\n\ She doesn't like leaving her universe as much as Lint and I but she joined on on plenty of adventures!\w8\n\She's a fire elemental!\w8\n\n[half]More on my fiery friend? \e"
+			}
+			when "toddh" //if the link is this value
+			{
+				"\0\s[0]Toddh is Nip and Fancy's friend!\w8\n\They're the one who gave them their house!\w8\n\They have two pairs of wings and can alter the colors of one!\w8\n\Movie night wing is a thing.\w8\n\n[half]More on my winged friend? \e"
+			}
+			when "nip" //if the link is this value
+			{
+				"\0\s[0]Nipal Twees is Fancy and Toddh's friend!\w8\n\ He's a skeleton often, a bunny sometimes and a bigger rabbit the rest of the time.\w8\n\He really enjoys scaring people (I guess it goes well with his origin...)\w8\nBut he's the best hugger around!!!\w8\n\n[half]More on my nightmare-related friend? \e"
+			}
+			when "fancy" //if the link is this value
+			{
+				"\0\s[0]Fancy is one of Mu's caretakers!\w8\n\He found her when she got lost and they helped each other since.\w8\n\He hasn't been feeling well recently...\w8\n\I hope he'll feel better soon, he's a very nice guy!\w8\n\n[half]More on my crowned friend? \e"
+			}
+			when "vary" //if the link is this value
+			{
+				"\0\s[0]Vary is Shift's twin sister!\w8\n\She's a padischiscuro, a shapeshifter from the void between worlds.\w8\n\It might sound spooky but she's mainly a small menace...\w8\n\Kinda like Lint, but add teeth and protectiveness towards her brother!\w8\n\n[half]More on my shapeshifter friend? \e"
+			}
+			when "shift" //if the link is this value
+			{
+				"\0\s[0]Shift is Vary's twin brother!\w8\n\He's a padischiscuro, a shapeshifter from the void between worlds.\w8\n\It might sound spooky but he's mainly a little guy.\w8\n\He might not be a saint but he's certainly sweeter than his sister!\w8\n\n[half]More on my shapeshifter friend? \e"
+			}
+			when "jar" //if the link is this value
+			{
+				"\0\s[0]Jar is Shift and Vary's friend!\w8\n\She's a very smart monster and take good care of the twins.\w8\nBut she does not like Lint!\w8\n\I can't say we're close but she showed me her collection of rocks, that must count!\w8\n\n[half]More on my friend's friend? \e"
+			}
+			when "sigma" //if the link is this value
+			{
+				"\0\s[0]Sigma...\w8\n\We used to bring them on our adventures but it's been very long since last time I saw them...\w8\n\Are we even still friends?\w8\n\I hope they're having a good life.\w8\n\n[half]More on my old friend? \e"
+			}
+			when "ursula" //if the link is this value
+			{
+				"\0\s[0]Ursula is like another big sister!\w8\n\Or an auntie?\w8\n\I like visiting her!\w8\n\n[half]More on my family-shaped friend? \e"
+			}
+			when "milkyway" //if the link is this value
+			{
+				"\0\s[0]Milkyway works in a coffee shop!\w8\nSlumber Cat Coffee belongs to her parents.\w8\n\She's funny and always has candy for me!\w8\n\n[half]More on my tired friend? \e"
+			}
+			when "dasha" //if the link is this value
+			{
+				"\0\s[0]Dasha is so tall and cool!\w8\n\They're blind so I helped them find stuff once or twice.\w8\n\Same specie than Vary and Shift!\w8\n\n[half]More on my tall friend? \e"
+			}
+			when "slumber cat coffee" //if the link is this value
+			{
+				"\0\s[0]Slumber Cat Coffee is a coffee shop!\w8\nBut they don't only sell coffee thankfully, because coffee is yucky!\w8\n\They have pastries and cool drinks with many colors and you can see space! AND CATS!\w8\nThere's a no fight rule here so you can meet anybody there!\w8\n\n[half]More on this coffee shop? \e"
+			}
+				when "soot" //if the link is this value
+			{
+				"\0\s[0]Soot is Lint's cousin!\w8\n\So it's my half-sister-from-another-multiverse's cousin?\w8\nI have one really weird family tree...\w8\n\I heard they often play-fight with Lint.\w8\nOr...I think it's playfight...\w8\n\n[half]More on my bunny goop friend? \e"
+			}
+				when "oriana" //if the link is this value
+			{
+				"\0\s[0]Oriana is one of my alternate siblings!\w8\n\I think only me and my siblings-from-another-multiverse can see her...\w8\nIt makes interacting with her around others a bit weird!\w8\nBut she's very cool,\w8\nI love her!\w8\n\n[half]More on my 'imaginary' alternate sister? \e"
+			}
+				when "nona" //if the link is this value
+			{
+				"\0\s[0]Nona is a strange child, the adopted little sister of Kilm and Kirpa, which make her like an unofficial cousin of \nSoot???\w8\n\I'm not sure it works like that?\w8\nNobody is sure of how old she is...\w8\nSometimes she acts like a baby sometimes not.\w8\nBut she's small and funny either way!\w8\n\n[half]More on my peculiar friend? \e"
+			}
+				when "kilm" //if the link is this value
+			{
+				"\0\s[0]I don't know much about Kilm beside he's the brother of \nKirpa and Nona and he is like a cousin to Soot.\w8\n\He's fine I guess.\w8\nOh! He often wears funny face masks!\w8\n\n[half]More on my face-masked friend? \e"
+			}
+				when "kirpa" //if the link is this value
+			{
+				"\0\s[0]I often see Kirpa when I go to \nSlumber Cat Coffee!\w8\n\I think they come to see \nMilkyway more than to drink anything...\w8\nThey are a bit weird but funny to watch!\w8\nI heard they have a bit of troubles with their sister Nona.\w8\nSomething like they're scared of her?\w8\nBut they're fine with Kilm?\w8\n\n[half]More on my entertaining friend? \e"
+				"\0\s[0]I often see Kirpa when I go to \nSlumber Cat Coffee!\w8\n\I think xe comes to see \nMilkyway more than to drink anything...\w8\nXe is a bit weird but funny to watch!\w8\nI heard xe has a bit of troubles with xer sister Nona.\w8\nSomething like xe's scared of her?\w8\nBut xe's fine with Kilm?\w8\n\n[half]More on my entertaining friend? \e"
+				"\0\s[0]I often see Kirpa when I go to \nSlumber Cat Coffee!\w8\n\I think he comes to see \nMilkyway more than to drink anything...\w8\nHe is a bit weird but funny to watch!\w8\nI heard he has a bit of troubles with his sister Nona.\w8\nSomething like he's scared of her?\w8\nBut he's fine with Kilm?\w8\n\n[half]More on my entertaining friend? \e"
+				"\0\s[0]I often see Kirpa when I go to \nSlumber Cat Coffee!\w8\n\I think she comes to see \nMilkyway more than to drink anything...\w8\nShe is a bit weird but funny to watch!\w8\nI heard she has a bit of troubles with her sister Nona.\w8\nSomething like she's scared of her?\w8\nBut she's fine with Kilm?\w8\n\n[half]More on my entertaining friend? \e"
+
+			
+			}
+				when "commontale" //if the link is this value
+			{
+				"\0\s[0]Commontale is the name of the world some of my friends live in!\w8\n\It's Mynn and Jar's world and her family.\w8\nVary and Shift like to live there too even if they weren't born there!\w8\n\n[half]More on my friend's universe? \e"
+			}
+		}
+	}
+}
+
+//This bit of code is what makes menu options that don't start with On direct to Select.options instead. Remove or comment it if you prefer!
+OnChoiceSelect
+{
+	EVAL("Select.%(reference0)")
+}

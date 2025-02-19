@@ -1,0 +1,784 @@
+﻿//---------------------------Envelopes--------------------------
+//This .dic file is probably one of the simplest you will have to edit, and in fact, if the way it works doesn't appeal to you, you can completely ignore it if you like!
+
+//Basically, what this file does is set up some things that, for the purposes of this file, I'll call envelopes (this is what they're referred to as on the CROW-SSP Dictionary site... at least, that's what I remember, it's been a while since I've checked it). They are technically functions and can do many things, but this file is mostly an organizational tool for storing lists you may use.
+
+//For the purposes of this file, an envelope is a list that you can populate with items, and this list can be called later during dialogue with the %(name) format. If you've read the walkthrough or gone through any of the other .dic files, you've probably seen these before. %(username) is one, which displays the user's name, and %(heshe) is another, which displays the right pronoun depending on what the user selected in bootend.dic or menu.dic. Other ones include %(passmin), which shows how many minutes have passed since the ghost was started, %(screenheight) which shows the height of the display they're currently on, and %(keroname) for the name of the second character, among many, many others. Many of these are predefined by the AYA scripting and will be listed on the CROW-SSP site mentioned above, and many of them you will never have to use.
+
+//So where does this file come in? Well, you can define your own envelopes/variables if you want! Here's an example.
+
+// exampleenvelope
+// {
+	// "Example Envelope Dialogue 1"
+	// "Example Envelope Dialogue 2"
+	// "Example Envelope Dialogue 3"
+// }
+
+//As you can see, we stated a word, opened some brackets, wrote some text, and closed the brackets. Now when you write ghost dialogue, you can write %(exampleenvelope) and your ghost will randomly display any of the three bits of text within the brackets! You can go ahead and test this yourself to see how it works, and I'll include some sample dialogue with this in aitalk.dic.
+
+//What can you use this kind of envelope for? You can store tons of random information to keep your ghost's dialogue varied! You can store various cities you like in %(city), musicians you like in %(musicians), places your ghost has been in %(places), food you like in %(food), movies you like in %(movie), fandoms you like in %(fandom), characters you like in %(fandomcharacter), celebrities you like under %(celebrity) or friends of yours in %(friends) or bnfs in %(bnfs), folders on your computer under %(folders), Pokemon you like under %(pokemon), insults under %(insult), swear words under %(swearword) which could potentially be hilarious, just about anything! You can make lists of absolutely anything to use with dialogue for your ghost! This .dic file is only limited by your imagination!
+
+//Not only that, but you can put an envelope IN an envelope. Here's another example.
+
+// internalenvelope
+// {
+	// "Internal Envelope Dialogue 1 - %(exampleenvelope)"
+	// "%(username)'s computer"
+	// "Here is a blanklist object - %(blanklist)."
+// }
+
+//You can nest envelopes all day long, although it might get kind of convoluted if you don't keep track. This is particularly handy with %(username), so your ghost can be specific if they're talking about something of the user's, like their files or folders for example. I'll leave a few lists in here you can fill out as you like. And if this doesn't give you ideas, you can ignore this file, since nothing in it will show up unless you write it into the dialogue. You can add or take away as many items as you want from each list.
+
+		//*********************Advanced User Info*******************************
+	  //These text boxes are meant for those who have an interest in expanding or using more complicated functions in their ghost. Also for my own reference in the future since I plan on using this template too, haha. If you have no interest in any of this and just want to keep things as simple as possible, feel free to skip these boxes.
+	  
+	  //Because these are basically their own functions, you can do other things with them as well as display dialogue. You can add if/else checks, run other functions, have pools of alternate dialogue... the possibilities are really endless.
+	  
+	  //One particularly useful thing you can do is add value changes to an envelope, if your dialogue is in a place where it's not easy to add the change directly. For example...
+	  
+	  FeelingsGoUp
+	  {
+	  Feelings += 1
+	  "Thank you, %(username), that was really nice of you.\e"
+	  }
+	  
+	  //So this would display the dialogue as well as change the value. Then you can call this in dialogue if you need to to change the value without having to do a bunch of fiddly business. Specifically I'm thinking about things like RandomTalk, where it can be finicky to have dialogue that also changes a value like this. Like "Oh... wow... %(FeelingsGoUp\e" could go into RandomTalk and still change the value effectively without breaking anything. You can of course also change multiple values at once, and if you don't put dialogue in there, it will change the value invisibly.
+	  
+	  //Another use for these envelopes is to shortcut certain long lines of SakuraScript you don't want to have to keep typing. A good example is if you want to change the font for a character. Take Papyrus from my Gaster ghost, he talks in the font Papyrus. But I don't want to have to type the tag for it for every line of dialogue he does. So instead I can put it in an envelope.
+	  
+	  //p
+	//	{
+	//	"\f[name,Papyrus UT]\f[height,16]"
+	//	}
+		
+		//And then I can make one that'll change the font back to normal.
+		
+	//	d
+	//{
+	//"\f[name,default]\f[height,default]"
+	//}
+	
+	//So in dialogue, to change fonts I'd just have to go "%(p)HEY THERE!%(d)" to change fonts back and forth quickly. These kind of shortcuts can be very useful.
+	
+	//Another way to use envelopes is to store multiple poses for SurfaceRestore in aitalk.dic. Gaster for example has several neutral idle poses, but also several poses for when he's scared. So I can make an envelope like
+	
+	drawingpose
+	{
+	"\0\s[98]\1\s[21]"
+	"\0\s[98]\1\s[23]"
+	"\0\s[98]\1\s[25]"
+	"\0\s[98]\1\s[27]"
+	"\0\s[98]\1\s[29]"
+	"\0\s[98]\1\s[31]"
+	"\0\s[98]\1\s[33]"
+	"\0\s[98]\1\s[35]"
+	"\0\s[98]\1\s[37]"
+	"\0\s[98]\1\s[39]"
+	"\0\s[98]\1\s[41]"
+	"\0\s[98]\1\s[43]"
+	"\0\s[98]\1\s[45]"
+	"\0\s[98]\1\s[47]"
+	"\0\s[98]\1\s[49]"
+	"\0\s[98]\1\s[51]"
+	"\0\s[98]\1\s[53]"
+	"\0\s[98]\1\s[55]"
+	"\0\s[98]\1\s[100]"
+	"\0\s[98]\1\s[101]"
+	"\0\s[98]\1\s[102]"
+	"\0\s[98]\1\s[103]"
+	"\0\s[98]\1\s[104]"
+	"\0\s[98]\1\s[105]"
+	"\0\s[98]\1\s[106]"
+	"\0\s[98]\1\s[107]"
+	"\0\s[174]\w5\0\s[98]"
+	
+	}
+	
+	showingpose
+	{
+	"\1\s[20]"
+	"\1\s[22]"
+	"\1\s[24]"
+	"\1\s[26]"
+	"\1\s[28]"
+	"\1\s[30]"
+	"\1\s[32]"
+	"\1\s[34]"
+	"\1\s[36]"
+	"\1\s[38]"
+	"\1\s[40]"
+	"\1\s[42]"
+	"\1\s[44]"
+	"\1\s[46]"
+	"\1\s[48]"
+	"\1\s[50]"
+	"\1\s[52]"
+	"\1\s[54]"
+	"\1\s[175]"
+	}
+	
+	drawingforyou
+{
+	"\1\s[21]\w5\0\s[98]"
+	"\1\s[23]\w5\0\s[98]"
+	"\1\s[25]\w5\0\s[98]"
+	"\1\s[27]\w5\0\s[98]"
+	"\1\s[29]\w5\0\s[98]"
+	"\1\s[31]\w5\0\s[98]"
+	"\1\s[33]\w5\0\s[98]"
+	"\1\s[35]\w5\0\s[98]"
+	"\1\s[37]\w5\0\s[98]"
+	"\1\s[39]\w5\0\s[98]"
+	"\1\s[41]\w5\0\s[98]"
+	"\1\s[43]\w5\0\s[98]"
+	"\1\s[45]\w5\0\s[98]"
+	"\1\s[47]\w5\0\s[98]"
+	"\1\s[49]\w5\0\s[98]"
+	"\1\s[51]\w5\0\s[98]"
+	"\1\s[53]\w5\0\s[98]"
+	"\1\s[55]\w5\0\s[98]"
+	"\1\s[100]\w5\0\s[98]"
+	"\1\s[101]\w5\0\s[98]"
+	"\1\s[102]\w5\0\s[98]"
+	"\1\s[103]\w5\0\s[98]"
+	"\1\s[104]\w5\0\s[98]"
+	"\1\s[105]\w5\0\s[98]"
+	"\1\s[106]\w5\0\s[98]"
+	"\1\s[107]\w5\0\s[98]"
+
+}
+
+	redcard
+{
+		"ace of diamonds"
+		"2 of diamonds"
+		"3 of diamonds"
+		"4 of diamonds"
+		"5 of diamonds"
+		"6 of diamonds"
+		"7 of diamonds"
+		"8 of diamonds"
+		"9 of diamonds"
+		"10 of diamonds"
+		"jack of diamonds"
+		"king of diamonds"
+		"queen of diamonds"
+		"ace of hearts"
+		"2 of hearts"
+		"3 of hearts"
+		"4 of hearts"
+		"5 of hearts"
+		"6 of hearts"
+		"7 of hearts"
+		"8 of hearts"
+		"9 of hearts"
+		"10 of hearts"
+		"jack of hearts"
+		"queen of hearts"
+		"king of hearts"
+}
+
+	blackcard
+{
+	"ace of clubs"
+	"2 of clubs"
+	"3 of clubs"
+	"4 of clubs"
+	"5 of clubs"
+	"6 of clubs"
+	"7 of clubs"
+	"8 of clubs"
+	"9 of clubs"
+	"10 of clubs"
+	"jack of clubs"
+	"queen of clubs"
+	"king of clubs"
+	"ace of spades"
+	"2 of spades"
+	"3 of spades"
+	"4 of spades"
+	"5 of spades"
+	"6 of spades"
+	"7 of spades"
+	"8 of spades"
+	"9 of spades"
+	"10 of spades"
+	"jack of spades"
+	"queen of spades"
+	"king of spades"
+}	
+	
+	listgames
+{
+	"Scrabble"
+	"Monopoly"
+	"Uno"
+	"Cluedo"
+	"cards"
+	"Guess who"
+	"I spy with my little eyes"
+	"Hide-and-seek"
+	"Trivial pursuit"
+	"Code names"
+	"Mario Kart"
+	"Memory"
+	"Go Fish"
+	"Twister"
+}
+
+	listnames
+{
+	"Toddh"
+	"Nip"
+	"Fancy"
+	"Mynn"
+	"Lint"
+	"Shine"
+	"Mal"
+	"Vary and Shift"
+	"Milkyway"
+	"Dasha"
+	"Ursula"
+}
+
+	listduonames
+{
+	"Toddh and Nip"
+	"Lint and Mynn"
+	"Shine and Mal"
+	"Milkyway and her dad"
+	"Jar, Vary and Shift"
+	"Fancy and Mu"
+}
+
+	winorlose
+{
+	"\0\s[6]winning!"
+	"\0\s[8]losing..."
+}
+	fanarts
+{
+		"\0\s[5]\b2Hey, it's my favorite picture!\w8\n\It's me and Shine!\n\w8\_b[img\bugog,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Creative-firebug\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Oh, that was for my birthday!\w8\n\Isn't she cute!\n\w8\_b[img\AC_bday,inline]\n\f[sub,true]This picture was taken by \f[bold,true]shinechermont\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Hey, it's Ursula and me!\w8\n\We were playing strings!\n\w8\_b[img\AC_string,inline]\n\f[sub,true]This picture was taken by \f[bold,true]shinechermont\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2That one is very old!\w8\n\I was trying so hard to smile for the photo.\n\w8\_b[img\AC_tradi,inline]\n\f[sub,true]This picture was taken by \f[bold,true]shinechermont\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2It's just me waving in an old outfit!\w8\n\A pretty regular picture.\n\w8\_b[img\ama_hi,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Amarald\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2I really enjoyed carrying around that banner!\w8\n\I might try writing Free Hugs next time!\n\w8\_b[img\ama_loved,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Amarald.\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2It's the most recent picture of Mu!\w8\nLook at that pretty sunset...\n\w8\_b[img\ama_sunset,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Amarald.\f[sub,false]"
+		"\0\s[5]\b2Aw I think it was after a stargazing night at Outertale!\w8\nYou spent most of the day after drawing the night sky after that uh, Mu?\n\w8\_b[img\ama_shiny,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Amarald.\f[sub,false]"
+		"\0\s[8]\b2What a weird picture.\w8\nWhere did you find that floating orange and why didn't you show it to me,\w5 Mu?\n\w8\_b[img\ama_orange,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Amarald.\f[sub,false]"
+		"\0\s[5]\b2It's a picture of me with my siblings\w8\n\We only lack Mu!\n\w8\_b[img\bug_family,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Creative-firebug\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2I will be taller than Mal one day!\w8\n\ But for now,\w5\ cardboard my friend...\n\w8\_b[img\bug_lineup,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Creative-firebug\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Little old me!\w8\n\Oh, we wrote the date on it!\w8\n\...2020!??\n\w8\_b[img\bug_post,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Creative-firebug\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2A picture of Mu!\w8\n\Something in this expression is... unnerving...\w8\n\Nice picture however.\n\w8\_b[img\bug_shaped,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Creative-firebug\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2What is that picture...?\w8\n\I don't remember that...?\n\w8\_b[img\drag_alter,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Dragon-tamer1\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2A birthday picture!\w8\n\I only had tiny cake pieces to eat longer!\n\w8\_b[img\drag_cake,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Dragon-tamer1\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2This day feels like a fever dream...\w8\n\I still can't believe it rained pancakus!\n\w8\_b[img\kenzie_pancakus,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Turtleduckrabbit\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2This one was nice.\w8\n\I can't deny it.\n\w8\_b[img\kenzie_smile,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Turtleduckrabbit\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2A new year's pic!\w8\n\This galette was very good.\n\w8\_b[img\micc0ro_newy,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Micc0ro\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Aw! The bunny new years pic of Mu!\w8\n\I miss this funny hat!\n\w8\_b[img\micc0ro_bunyy,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Micc0ro\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2It's just me standing there.\w8\n\It's hard to show how to pose for a picture...\n\w8\_b[img\psy_artfight,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Psychomeows\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Oh, I remember this!\w8\n\We were doing individual family pictures.\n\w8\Mmmm, something isn't right...\n\w8\_b[img\taffy_old,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Laf-e-taffy\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2It was my birthday!\w8\n\I really used my scissors on that outfit.\n\w8\_b[img\tsar_birth,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Star-gamerxox\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Mal and me!\w8\n\I might have done something annoying right before...\n\w8\_b[img\Yuri_mal,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Yuriyuruyuraart\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Oh, it was for my creator's birthday!\w8\n\I'd never refuse a hug from Mu!\n\w8\_b[img\Zuz_double,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Zu-is-here\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Mu and Aim!\w8\n\They celebrate their birthday together every year!\n\w8\They're so cute!\n\w8\_b[img\zuz_flowers,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Zu-is-here\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2I like how dynamic this one is.\w8\n\It was taken around the time Lint got into the habit of dragging me to do parkour with her!\n\w8\_b[img\Zuz_flying,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Zu-is-here\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2I can't remember why I was that happy in this one.\w8\n\Hehe, smiling with all my teeth!\n\w8\_b[img\Zuz_himface,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Zu-is-here\f[bold,false].\f[sub,false]"
+		"\0\s[5]\b2Aim and Mu.\w8\n\They can be so silly together!\n\w8\_b[img\zuz_water,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Zu-is-here\f[bold,false].\f[sub,false]"
+		// "\0\s[5]\b2It's the most recent picture of Mu!\w8\nLook at that pretty sunset...\n\w8\_b[img\ama_sunset,inline]\n\f[sub,true]This picture was taken by \f[bold,true]Amarald.\f[sub,false]"
+
+}
+	
+	mimosatoy
+	{
+	"\0\s[85]Oh, \w8\it's for me?\w8\n\Thank you!\w8\n\I’ll put it in my room later."
+	"\0\s[86]Oh, \w8\it's for me?\w8\n\Thank you!\w8\n\I’ll put it in my room later."
+	"\0\s[87]Oh, \w8\it's for me?\w8\n\Thank you!\w8\n\I’ll put it in my room later."
+	"\0\s[88]Oh, \w8\it's for me?\w8\n\Thank you!\w8\n\I’ll put it in my room later."
+	"\0\s[89]Oh, \w8\it's for me?\w8\n\Thank you!\w8\n\I’ll put it in my room later."
+	}
+	
+	mimosaflower
+	{
+	"\0\s[75]A flower?\w8\ It's so pretty!\n\n[half]\w8\1\s[24]\w8\0\s[75]No, Mu.\w8\ This one is mine!\w8\1\s[10]"
+	"\0\s[76]A flower?\w8\ It's so pretty!\n\n[half]\w8\1\s[24]\w8\0\s[76]No, Mu.\w8\ This one is mine!\w8\1\s[10]"
+	"\0\s[77]A flower?\w8\ It's so pretty!\n\n[half]\w8\1\s[24]\w8\0\s[77]No, Mu.\w8\ This one is mine!\w8\1\s[10]"
+	"\0\s[78]A flower?\w8\ It's so pretty!\n\n[half]\w8\1\s[24]\w8\0\s[78]No, Mu.\w8\ This one is mine!\w8\1\s[10]"
+	"\0\s[79]A flower?\w8\ It's so pretty!\n\n[half]\w8\1\s[24]\w8\0\s[79]No, Mu.\w8\ This one is mine!\w8\1\s[10]"
+	}
+	
+	mimosaflowersans
+	{
+		"\0\s[75]"
+		"\0\s[76]"
+		"\0\s[77]"
+		"\0\s[78]"
+		"\0\s[79]"
+	}
+	
+	
+	
+	mimosasnack
+	{
+	"\0\s[93]How did you know I was getting hungry?"
+	"\0\s[94]How did you know I was getting hungry?"
+	"\0\s[95]How did you know I was getting hungry?"
+	"\0\s[96]How did you know I was getting hungry?"
+	"\0\s[97]How did you know I was getting hungry?"
+	"\0\s[93]Mmmmm"
+	"\0\s[94]Mmmmm"
+	"\0\s[95]Mmmmm"
+	"\0\s[96]Mmmmm"
+	"\0\s[97]Mmmmm"
+	"\0\s[93]Thanks!"
+	"\0\s[94]Thanks!"
+	"\0\s[95]Thanks!"
+	"\0\s[96]Thanks!"
+	"\0\s[97]Thanks!"
+	"\0\s[93]Where did you find this lollipop?\w5 It tastes really good!"
+	"\0\s[94]Where did you find this lollipop?\w5 It tastes really good!"
+	"\0\s[95]Where did you find this lollipop?\w5 It tastes really good!"
+	"\0\s[96]Where did you find this lollipop?\w5 It tastes really good!"
+	"\0\s[97]Where did you find this lollipop?\w5 It tastes really good!"
+	"\0\s[93]"
+	"\0\s[94]"
+	"\0\s[95]"
+	"\0\s[96]"
+	"\0\s[97]"
+
+
+	}
+	
+	mimosasmile
+	{
+	"\0\s[5]Waow your smile is so bright,\w5 it almost blinded me!"
+	"\0\s[5]Keep smiling,\w5 it’s good for your health!"
+	"\0\s[5]Here,\w5 I smile too!\w8\nNow we’re both smiling!"
+	"\0\s[0]That’s a weird smile but that’s okay,\w5 it’s cool too."
+	"\0\s[5]You have so many teeth…"
+	}
+	
+	mimosabook
+	{
+		"%(bookmim)Look Mu,\w8\ I think you’ll like this one,\w8\ we can read it together later!"
+		"%(bookmim)I never heard of this book,\w6\ I can’t wait to read it!"
+		"%(bookmim)Oh it looks like it has so many complicated words…\w8\n\ Maybe Toddh could help me read it?"
+		"%(bookmim)Thanks,\w8\ the pictures look beautiful!"
+		"%(bookmim)Maybe we could read it together later?\w8\n\If you want?"
+	}
+	
+	bookmim
+	{
+		"\0\s[80]"
+		"\0\s[81]"
+		"\0\s[82]"
+		"\0\s[83]"
+		"\0\s[84]"
+	}
+	
+	mutoy
+	{
+		"\1\s[64]"
+		"\1\s[65]"
+		"\1\s[66]"
+		"\1\s[67]"
+		"\1\s[68]"
+		"\1\s[69]"
+		"\1\s[74]"
+	}
+	
+	muflower
+	{
+		"\1\s[59]"
+		"\1\s[60]"
+		"\1\s[61]"
+		"\1\s[62]"
+		"\1\s[63]"
+	}
+	
+	musnack
+	{
+		"\1\s[70]"
+		"\1\s[71]"
+		"\1\s[72]"
+		"\1\s[73]"
+	}
+	
+	musmile
+	{
+		"\1\s[25]"
+		"\1\s[16]"
+	}
+	//mubook
+	
+	lintanswer
+{
+	"\1\s[19]\w5\0\s[5]Lint?\w5\1\s[33]\0\s[5]\w8\n\I met her a few years ago and we’ve been friends since!\w8\n\0\s[0]She was my first friend since I left my old home.\w6\.\w6\."
+	"\1\s[19]\w5\0\s[0]Believe it or not,\w5\1\s[33]\0\s[0]\w6\ being friends with her really trains you to startle less easily!\1\s[32]"
+	"\1\s[19]\w5\0\s[0]I never met her parents \1\s[33]\0\s[0]\w6\but it would be really weird to talk with another \w6\(other)\w6\ version of my daddy.\w8\n\0\s[5]I heard many stories about her cousins!"
+	"\1\s[19]\w5\0\s[0]I think I saw her in a nightmare recently,\w5\1\s[33]\0\s[0]\w6\ beat up a huge terrifying thing.\w8\n\I believe it’s not too far from her usual self.\1\s[32]"
+	"\1\s[19]\w5\0\s[0]The reverse of Lint makes Tnil!\w5\1\s[33]\0\s[0]\w8\n\No,\w6\ I don’t know where I was going with that either...\1\s[16]"
+	"\1\s[19]\w5\0\s[0]We had our fights but,\w5\1\s[33]\0\s[0]\w6\ in the end,\w6\0\s[5] she’s a very good friend."
+	"\1\s[19]\w5\0\s[0]The way she talks about\1\s[33]\0\s[0] Soot sometimes makes me fear for their life-\1\s[32]"
+	"\1\s[19]\w5\0\s[5]Lint was with me when we found Mu!\w5\1\s[33]\0\s[0]\w8\n\0\s[0]We were just goofing around and randomly fell on Fancy’s house…\w8\n\0\s[3]It was an emotional moment..."
+	"\1\s[19]\w5\0\s[0]She might seem rough but\w5\1\s[33]\0\s[0]\w6\ the truth is she cares so deeply about others..."
+	"\1\s[19]\w5\0\s[0]Don’t tell her I said that,\w5\1\s[33]\0\s[0]\w6\ but she’s slightly shorter than me!\w8\n\0\s[6]And it annoys her to no end!"
+	"\1\s[19]\w5\0\s[6]Lint would have \1\s[33]\0\s[0]already gone through your files ten times if she was here instead of me."
+	"\1\s[19]\w5\0\s[0]Lint has a hard time being told no.\w8\nIf she doesn't like your reason,\w5she'll find a way to do it anyway..."
+	"\1\s[19]\w5\0\s[0]I had to tell her many many times I did not want to fight her for fun before she stopped asking..."
+	"\1\s[19]\w5\0\s[0]She has been very quiet lately,\w5 this is worrying me."
+	"\1\s[19]\w5\0\s[0]I don't think I ever managed to see a whole movie with her,\w5 or at least 'hear' it."
+	"\1\s[19]\w5\0\s[0]I don't know a lot of people who fistfighted a giraffe without even being dared to."
+	"\1\s[19]\w5\0\s[0]She is...\w5enthusiastice."
+
+}
+	mynnanswer
+{
+	"\1\s[19]\w5\0\s[0]Mynn is older than me!\w5\1\s[43]\0\s[0]\w8\n\She might reach adulthood soon enough.\w8\n\I don’t want that.\w8\n\It will feel weird."
+	"\1\s[19]\w5\0\s[0]She’s so grown-up, has a job and a house!\w5\1\s[43]\0\s[0]\w8\n\It’s small and empty but a house to herself is so cool!\w8\n\I would feel lonely in her place thought..."
+	"\1\s[19]\w5\0\s[0]Mynn is the best dancer!\w5\1\s[43]\0\s[0]\w8\n\She’s hard to convince but I love watching her dance!"
+	"\1\s[19]\w5\0\s[0]I guess her full name is Mynnash but I never called her that.\w5\1\s[43]\0\s[0]\w8\n\I heard some call her Myntea and Myndy,\w6\ I guess it has something to do with the color of her fire?\w8\n\Mynn is easier."
+	"\1\s[19]\w5\0\s[0]One day,\w5\1\s[43]\0\s[0] she might actually strangle Lint for spawning during a shift."
+	"\1\s[19]\w5\0\s[0]She taugh me to roller skate!\w5\1\s[43]\0\s[0]\w8\n\I’m bad at it!"
+	"\1\s[19]\w5\0\s[0]It feels like I knew her all my life sometimes...\w5\1\s[43]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]She might seem gruffy but she never refused to help me!\w5\1\s[43]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]She has a pair of socks I will end up stealing\w5\1\s[43]\0\s[0] sooner or later..."
+	"\1\s[19]\w5\0\s[0]Mynn is an orphan but never seems to care much about it,\w5\1\s[33]\0\s[0] I could let her borrow some family members,\w6\ I keep finding new ones-"
+	"\1\s[19]\w5\0\s[0]The best friend to have during winter.\w5\1\s[43]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]I know to convince her to teach how to juggle.\w8\nWith fire."
+	"\1\s[19]\w5\0\s[0]Her house is very clean and a bit empty."
+	"\1\s[19]\w5\0\s[0]I wish I could change color too...\w8\nLike a cameleon!"
+	"\1\s[19]\w5\0\s[5]Mynn is my favorite person from Commontale!"
+	}
+
+	padishanswer
+{
+	"\0\s[0]I never saw one without the other so far!\w8\n\Is it a twin thing?"
+	"\0\s[0]Their habit to shapeshift into someone to say hello took me a moment to get used to.\w6\.\w6\."
+	"\0\s[0]We don’t spend a lot of time together but Lint loves them.\w8\n\It really annoys Jar."
+	"\0\s[0]I can’t help but relate to them sometimes.\w8\n\They,\w6\ too,\w6\ were forced away from their family and home without hope to return…\w8\n\Let’s stop talking about that!"
+	"\0\s[0]Vary bit me once.\w8\n\Maybe twice or thrice in fact."
+	"\0\s[0]I sang with them last time,\w6\ it was nice!"
+	"\0\s[0]They are the best partners to pull up a prank!\w8\n\Always ready for it as well!"
+	"\0\s[0]I wonder how does it feel to move between places freely without being tethered to one home?\w8\n\Or are they each other’s home?\w8\n\I wonder..."
+	"\0\s[0]Once Shift got hurt and Jar had so much troubles with that because\w6\ she couldn’t figure out which one was really hurt!\w8\n\Their habit to always mirror the other..."
+	"\0\s[0]I think Vary is trying to see how far she can go before I get truly annoyed.\w8\n\ It won’t work because it’s funnier for me to pretend nothing she can do annoy me.\w8\n\n[half]I need her to stop stealing my shoes."
+	"\0\s[0]Shift made me a friendship bracelet,\w6\ then another one for Vary because she cried."
+	"\0\s[0]They’re so small when they don’t mimic someone else,\w6\ I can carry both at the same time!"
+	}
+	
+	nipanswer
+{
+	"\1\s[19]\w5\0\s[0]Being hugged from the ceiling is a truly interesting experience.\w5\1\s[39]\0\s[0]\w8\n\0\s[5]I recommend it!"
+	"\1\s[19]\w5\0\s[0]Why did he laugh when I told him a bad nightmare I had last month?\w5\1\s[39]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]When he’s small,\w5\1\s[39]\0\s[0]\w6\ I can carry him around easily!\w8\n\He doesn’t let me do that often."
+	"\1\s[19]\w5\0\s[0]How does time work when you live in a nightmare?\w5\1\s[39]\0\s[0]\w8\n\I didn’t understand any of his explanations about it and\w6\ I can’t trust him to not lie about it…\w8\n\How old is he really?"
+	"\1\s[19]\w5\0\s[0]Since I met him,\w5\1\s[39]\0\s[0]\w6\ I always make sure to say hello to the horrors when I meet one in my dreams.\w8\nWhat if it is one of his coworkers?"
+	"\1\s[19]\w5\0\s[0]He once tackled me big just so I couldn’t reach the tv remote.\w5\1\s[39]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]I want to test how far I can take his hand.\w5\1\s[39]\0\s[0]\w8\n\How does separate limbs work exactly?"
+	"\1\s[19]\w5\0\s[0]The tips of his ears is so fluffy,\w5it looks like cotton candy...\w8\nIt does NOT taste like cotton candy.\1\s[16]"
+	"\1\s[19]\w5\0\s[0]He burned down the kitchen a few times.\w8\nWe might have helped.\1\s[16]"
+	"\1\s[19]\w5\0\s[0]His stories are special but interesting.\w8\nI don't recommend those before sleep."
+	"\1\s[19]\w5\0\s[0]He slepped under my bed ONCE,\w5 I hope he understood why I didn't find it funny?"
+	"\1\s[19]\w5\0\s[0]Despite everything, I do like him."
+	"\1\s[19]\w5\0\s[0]Since I saw him fight,\w5 I'm glad he's on our side."
+	"\1\s[19]\w5\0\s[0]I forget he was born from a bad dream when we find him asleep curled up in weird places.\w8\nHe can be cute when he's unconscious!\1\s[152]"
+}
+	
+	fancyanswer
+{
+	"\0\s[0]I don’t want to bother him,\w6\1\s[13]\0\s[0] he had several rough days..."
+	"\0\s[0]He made me a berry pie last time and it was very good!\w8\n\Which berries?\w8\n\0\s[5]All of them!\1\s[16]"
+	"\0\s[0]Mu would never call him father or any parental titles.\w8\1\s[58]\w8\1\s[54]\0\s[0]\w8\n\n[half]Yeah I know he’s technically 4 years old.\w8\n\1\s[19]\0\s[9]But he took care of you for a while and\w6\ keep doing so and I can’t be more grateful for that!"
+	"\0\s[3]How weird must it be to have memories that are not yours...\1\s[18]"
+	"\0\s[3]...He once called me as if I was his son and him my dada,\1\s[152]\w6\0\s[4] it did nothing good to both of us..."
+	"\0\s[0]Fancy is cool,\w5\1\s[16]\0\s[5] he has that bony tail that wiggles."
+	"\0\s[0]I got told Fancy's recipes book was terrifying for some reason?\w5\1\s[16]"
+	"\0\s[0]Nobody wants to wake him up in the morning,\w5\1\s[152] for good reasons."
+	"\0\s[0]Fancy has wikipedia in his head.\w8\nHe should not be allowed on trivia night...\w5\1\s[16]"
+}
+	toddhanswer
+{
+	"\1\s[19]\w5\0\s[0]He is so so old.\w5\1\s[35]\0\s[0]\w8\n\He might have known the dinsosaurs?\w8\1\s[16]\0\s[6]\w8\n Maybe?"
+	"\1\s[19]\w5\0\s[8]I wonder how many places he hid in his space bubbles...\w5\1\s[35]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]He needs to tell me more stories,\w5\1\s[35]\0\s[0] why live this old if not to tell me interesting stories?"
+	"\1\s[19]\w5\0\s[8]Was he born like that or\w5\1\s[35]\0\s[0] did he grew the second pair of wings later?"
+	"\1\s[19]\w5\0\s[0]A man of all situations,\w5\1\s[35]\0\s[0] better be on his side."
+	"\1\s[19]\w5\0\s[0]Toddh is a weird name \w5\1\s[35]\0\s[0]but he said he chose it himself and \0\s[3]now it feels mean to say so."
+	"\1\s[19]\w5\0\s[0]He told me he invited Nip to live in this house because he had a nice soul?\w5\1\s[35]\0\s[0]\w8\n\0\s[8]What does that mean?"
+	"\0\s[0]Tv man\w5\1\s[16]"
+}
+	elseanswer
+{
+	"\0\s[0]I’m not sure if Jar likes me or not..."
+	"\0\s[0]I didn’t see Sigma in a veryyy long while,\w6\ I hope they’re living well with their family."
+	"\0\s[0]When I go to Slumber Cat Coffee, I often see Soot in the cat corner."
+	"\0\s[0]One thing I like about Milkyway is that she tripped at least as much as me!\w8\nDon't tell her I said that please."
+	"\0\s[0]I heard Kirpa declared xer love or something to Milkyway a while ago but I don't know what happened after?"
+	"\0\s[0]I met a Nightmare at Slumber Cat Coffee, I think it was Lint's uncle!\w8\nI wonder how my uncle was like?"
+	"\0\s[0]Dasha carried me during a whole day once!\w8\nIt was nice to be taller than everybody!"
+	"\0\s[0]I only met Nona once, she was very weird but cool-weird!"
+	"\0\s[0]I met someone very cool once but I never asked their name and I doubt I'll see them again..."
+	"\0\s[5]Do you think Kilm would make me a face mask if I asked nicely?"
+	"\0\s[0]I want to ask Dasha is being blind really makes your hearing better but I fear it might be rude to ask?"
+	"\0\s[0]Maybe I should try to befriend someone else from Commontale...?"
+
+
+}
+
+muanswer
+{
+	"\0\s[98]That’s my little sister!\w8\n\She’s right there!\w8\1\s[15]"
+	"\0\s[98]Buy her some color pens and she’ll like you forever.\w8\1\s[152]\0\s[6]\n\She goes through her pens very fast!\w8\1\s[58]\w8\0\s[0]\n\n[half]Yes you do.\w5\1\s[10]"
+	"\0\s[98]Treat her alright,\w6\ she has a lot of protectors.\w8\n\A true princess!\w8\1\s[152]\w8\0\s[0] Yeah, a cool one."	
+	"\0\s[98]Do you often ask someone's opinion on a person who is right next to them?\1\s[16]"
+
+}
+
+shineanswer
+{
+	"\1\s[19]\w5\0\s[0]Shine has troubles with other’s high emotions,\w5\1\s[106]\0\s[0] she’s an empath!"
+	"\1\s[19]\w5\0\s[0]She was so quick to adopt me,\w5\1\s[106]\0\s[0] I can’t thank her enough…"
+	"\1\s[19]\w5\0\s[0]She let me borrow her stick once!\w8\1\s[106]\0\s[0]\n\It’s very smooth!"
+	"\1\s[19]\w5\0\s[0]I need to calm down sometimes around her,\w5\1\s[106]\0\s[0] it can be hard.\w8\n\Worth it."
+	"\1\s[19]\w5\0\s[0]She's a great hugger!\w5\1\s[106]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]I'm sure she's called Shine because she makes our days all shiny!\w5\1\s[106]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]She reads me stories before sleeping once in a while!\w5\1\s[106]\0\s[0]\nI just need to remember to not get too excited."
+	"\1\s[19]\w5\0\s[0]Shine leaves the house less often than Mal so she's easier to find!\w5\1\s[106]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]Don't spook her,\w5\1\s[106]\0\s[0] she's very nice!"
+}
+
+malanswer
+{
+	"\1\s[19]\w5\0\s[0]They love pretty dresses!\w5\1\s[107]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]Mal may or may not be plotting world domination worringly often...\w5\1\s[115]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]Mal has a partner!\w5\1\s[107]\0\s[0]\w8\nBow! or Butterfly!\w8\nSeveral names,\w5\ I dunno why!"
+	"\1\s[19]\w5\0\s[0]That's my sibling!\w5\1\s[107]\0\s[0]\w8\nBut also my sister!\w8\nAnd my brother!"
+	"\1\s[19]\w5\0\s[0]Do you have a sibling that can be a bit threatening at times?\w5\1\s[107]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]I beat them at %(listgames) last time!\w5\1\s[107]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]To my giant,\w5 like huge,\w5\1\s[107]\0\s[0] like very big regret, I've lost the last game of %(listgames) against them..."
+	"\1\s[19]\w5\0\s[0]I made a cake for their birthday once!\1\s[107]\0\s[0]\w8\nIt tasted bad!"
+	"\1\s[19]\w5\0\s[0]I sometimes fear Mal'd kill someone if they looked at me wrong.\w5\1\s[107]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]Don't tell them that but I stole one of Mal's dress and cut it in pieces.\w5\1\s[107]\0\s[0]\w8\nI don't regret it but I can't help but worry about unplanned consequences."
+	"\1\s[19]\w5\0\s[0]I can trust them to leave a note when they leave the house and I really appreciate it.\w5\1\s[107]\0\s[0]"
+	"\1\s[19]\w5\0\s[0]I love my sibling regardless of what they'll do to me if they notice my last prank.\w5\1\s[115]\0\s[0]\w8\nHelp."
+}
+
+parentsanswer
+{
+	"\0\s[3]My…\w8\ parents…\w8\w8\n\Why would you want to talk about them…?"
+	"\0\s[3]I miss them…"
+	"\0\s[0]Who talked to you about them?"
+	"\0\s[3]They’re not here anymore."
+	"\0\s[3]…"
+	"\0\s[0]Can we talk about something else?"
+	"\0\s[3]They left without me."
+	"\0\s[3]They’re gone."
+	"\0\s[3]I don’t want to talk about that."
+	"\0\s[0]And your parents?\w8\nHow are they?\w8\nCan we talk about that instead?"
+	"\0\s[3]I don’t need them right now."
+	"\0\s[0]I have lots of good memories of them,\w6\ it makes me sad sometimes."
+	"\0\s[0]I vaguely remember being there for their wedding.\w8\n\I’m not sure I was aware it was their wedding now that I think about it."
+	"\0\s[3]They weren’t perfect\w6\ but at least they were here.\w8\n\Until they weren't."
+	"\0\s[0]I remember being flung on the couch by Dada a lot!\w8\n\We were playing!"
+	"\0\s[3]Cherish your parents."
+	"\0\s[3]I’m anxious when someone doesn’t say goodbye to me now…"
+	"\0\s[3]…\w6\.\w6\.\w6\.\w6\no."
+	"\0\s[3]I’m not in the mood for that today!\w8\n\So no!"
+	"\0\s[4]I-\w5 I-\w5 I\w5 need a hug please.\n\n[half]\w8\w8\w8\w8\w8\1\s[92]\0\s[91]Thanks Mu."
+}
+
+relatedanswer
+{
+	"\0\s[0]The fact multiverses are a thing means I have so many somewhat related people I could meet.\w8\n\My parents are often not very different but,\w6\ I am not always their son,\w6\ not very often in fact…"
+	"\0\s[0]I have alternate siblings I barely know,\w5\0\s[5] and some already have children!"
+	"\0\s[0]At this point,\w5\0\s[99] I just wonder if I'm not somewhat related to everybody...\w5\1\s[152]"
+	"\0\s[0]I never met my grandparents or any versions of them...\w8\nWhat were they like?\w5\1\s[152]"
+	"\0\s[0]I have one very messy family tree,\w5\0\s[99] believe me."
+	"\0\s[0]If someone raised your biological sister but not you,\w5 does that make them family?\1\s[152]"
+	"\0\s[0]Oh!\w8 Did I talk to you about-\w8\nWait, creator said I couldn't talk about him yet.\w8\nSorry it's spoiler,\w5\0\s[99] whatever that means."
+	
+}
+	
+pastanswer
+{
+	"\0\s[5]I was sewing a hole shut in one of my socks!\w8\n\With my knife!"
+	"\0\s[5]I was in the middle of playing %(listgames) with %(listnames).\w8\nI think I was %(winorlose)"
+	"\0\s[5]I was in the middle of playing %(listgames) with %(listduonames).\w8\nI think I was %(winorlose)"
+	"\0\s[5]I was playing with Lint,\w6\ somewhere…"
+	"\0\s[5]I was reading a book,\w6\ a cool one!"
+	"\0\s[5]Mynn was showing me a roller trick!"
+	"\0\s[5]I was eating something yummy!"
+	"\0\s[5]Napping in my bean bag.\w8\nComfy…"
+	"\1\s[39]\0\s[5]We were in the kitchen baking a cake with Nip!\w8\n\I hope he removed it from the oven.\1\s[38]"
+	"\0\s[5]Enjoying music in the living room,\w6\0\s[1] I left a mess,\w6\ woops."
+	"\0\s[5]I was waiting for Shine to finish her rest!\1\s[0]"
+	"\0\s[5]We were listening to Toddh’s stories!\1\s[35]"
+	"\0\s[5]Doing a puzzle with Vary and Shift."
+	"\0\s[0]Eating a tacos. Not even a good one.\1\s[16]"
+	"\0\s[5]I was at Milkyway’s coffee!\w8\n\I mean Slumber Cat Coffee."
+	"\0\s[5]Jar was showing me her rocks!"
+	"\0\s[6]Bothering Ursula."
+	"\0\s[5]I was helping Dasha find something they lost!"
+	"\0\s[0]Nothing much,\w6\ I was bored."
+	"\0\s[0]I was showing something to Oriana!"
+}
+
+nowanswer
+{
+	"\0\s[5]All well!"
+	"\0\s[5]Fine and more!\w8\n\And you?"
+	"\0\s[5]Nicely,\w6\ thanks for asking!"
+	"\0\s[3]I am a bit tired but still standing!"
+	"\0\s[5]Sleepy but happy to be here with you."
+	"\0\s[3]Good,\w6\ why wouldn’t I feel good?"
+	"\0\s[5]I got a gift today so wonderfully well!"
+	"\0\s[5]I’m going to the movies this weekend,\w6\ I can’t wait!"
+	"\0\s[3]My leg is a bit sore,\w6\ I might need to sit down later…"
+	"\0\s[0]The real question is,\w6\ how are \f[italic,true]you\f[italic,false] doing?"
+}
+
+likeanwser
+{
+	"\0\s[5]Socks."
+	"\0\s[5]Ducks.\1\s[52]"
+	"\0\s[5]Fabric!"
+	"\0\s[5]My family!\1\s[24]"
+	"\0\s[5]Hearing stories!"
+	"\0\s[5]Singing…\w6\0\s[1] Badly?\1\s[16]"
+	"\0\s[6]Pulling pranks!\w8\n\Harmless ones,\w6\ promise.\1\s[16]"
+	"\0\s[5]My tentacles,\w6\ they’re very squishy.\1\s[18]"
+	"\0\s[5]Candies!\1\s[40]"
+}
+
+unlikeanwser
+{
+	"\0\s[3]Devil birds...\1\s[113]\w8\w8\1\s[105]"
+	"\0\s[4]Perfidious tiny blades...\1\s[112]\w8\w8\1\s[104]"
+	"\0\s[3]Being alone…\1\s[13]"
+	"\0\s[1]Blushing.\1\s[16]"
+	"\0\s[0]What do YOU hate?"
+	"\0\s[3]Tripping,\w6\ I do that often,\w6\ usually on my tentacles.\1\s[16]"
+	"\0\s[4]People I care about not knowing where I am…\1\s[13]"
+	"\0\s[0]Fighting,\w6\0\s[6] I’m much better at fleeing."
+	"\0\s[0]I wouldn't say hate but I don't like this question."
+}
+
+
+	hahastory
+{
+	"\0\s[0]One day a banana… \w8\n\Wait\w8\ oh I forgot how it ends.\w8\n\ Laugh please?"
+	"\0\s[0]A blind dog runs into a bar,\w6\ then a table,\w6\ then a chair…\w8\n\0\s[6]Doggo had a bad day but we laughed a lot!\1\s[57]"
+	"\0\s[0]Do you know how to spill,\w5\ spell,\w5\ spolen?\1\s[16]"
+	"\0\s[0]What do you get when you mix a cow with an earthquake.\w8.\w8.\w8?\w8\n\n[half]\0\s[5]Millshake!\1\s[18]"
+	"%knockknock"
+	"%knockknock"
+	"%knockknock"
+	"%knockknock"
+
+	
+}
+
+	knockknock
+{
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Ache!\x\c>...Ache who?<\n\n[half]\w8\0\s[6]Bless you!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Who!\x\c>...Who who?<\n\n[half]\w8\0\s[6]Are you an owl!??"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Wooden shoe!\x\c>...Wooden shoe who?<\n\n[half]\w8\0\s[6]Wooden shoe like to know?"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]A little old lady!\x\c>...A little old lady who?<\n\n[half]\w8\0\s[6]You can yodel,\w5 that's so cool!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Dishes!\x\c>...Dishes who?<\n\n[half]\w8\0\s[6]Dishes me obviously!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Nana!\x\c>...Nana who?<\n\n[half]\w8\0\s[6]Nana your business!!!\w8\n\0\s[8]Oh wait,\w5 it works with Nona too..."
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Tennis!\x\c>...Tennis who?<\n\n[half]\w8\0\s[6]Tennis five + five!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Doris!\x\c>...Doris who?<\n\n[half]\w8\0\s[6]Doris closed that's why I'm knocking!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Spell!\x\c>...Spell who?<\n\n[half]\w8\0\s[6]Ok!\w8\W-H-O!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Cargo!\x\c>...Cargo who?<\n\n[half]\w8\0\s[6]Nooooo,\w5 cars go beeeeeeep-beeeeeep!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Olive!\x\c>...Olive who?<\n\n[half]\w8\0\s[6]Olive you a lot!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Tank!\x\c>...Tank who?<\n\n[half]\w8\0\s[6]You're welcome!!!"
+	"\0\s[0]Knock knock!\n\n[half]\x\c>Who's there?<\n\n[half]\w8\0\s[5]Mimosa!\x\c>...Mimosa who?<\n\n[half]\w8\0\s[6]Did you seriously forgot my name already!??"
+
+
+}
+	
+	// bouhoustory
+// {
+	// "\0\s[0]\Do mama cats cry for long\w6\ when they take their babies away for adoption?\x\Do they quiet their heart to the world \w6\because it’s just how it works \w6\and weep silently at night?\x\Do they roll onto every smell \w6\to keep the memories fresh as long as it is still here?\x\Do they think they died?\w8\n\Are those demons\w6\ or angels that came to steal them?\w8\n\Do they have other babies\w6\ and confuse the new with the old…\w8\n\n[half]Can a story be only made of\w6\ questions?\w8\n\I think so.\x"
+	// "\0\s[0]\A bird sits and waits on a beach.\w8\n\The funny way birds sit!\w8\n\It looks at the water coming and going not so far from his feet.\x\w8\It was more far earlier.\w8\n\Small,\w6\ tiny,\w6\ nothing but a dream of times to come.\x\Now the water is close and impressive \w6\and it’s almost to its feet.\x\Its little breast expands and…\w8\ deexpands?\w8\n\And its little beady eyes follow the movements.\w8\n\A cool breeze whispers at its ears,\w6\ under their feathers.\w8\n\n[half]''Fly,\w6\ little bird,\w6\ fly!\w8\n\The see will swallow your soul\w6\ and you will never see the sky again!''.\w8\n\n[half]The shivering bird did not move\w6\ beyond shivering as its toes dipped into the salted water.\w8\n\n[half]''Breeze,\w6\ I can’t,\w6\ a shell shined so hard earlier,\w6\ it distracted me,\w6\ my wings are broken\w6\ and my feet hurt.\w8\n\Let me go,\w6\ how can I keep being a bird if I can’t fly \w6\or hunt the worm?''\w8\n\n[half]The breeze wept\w6\ but it understands.\w8\n\Despite what the bird said it wanted,\w6\ the breeze stayed\w6\ until the bird disappeared fully,\w6\ washed out by the waves.\w8\n\Some nights you can even hear it sings for the poor bird…\w8\n\n[half]How does someone end a story?\w8\n\End?\w8\n\It’s finished???"
+// }
+	uhstory
+{
+	"\0\s[0]A guy buy an ice-cream and it screamed at him.\w8\n\That’s it."
+	"\0\s[0]A swimmer swam downwards a waterfall until it touches the center of the planet.\w8\n\It was so hot they shouted their suffering loud!\w8\n\So loud,\w6\ it created the first ever earthsquake!\w8\n\n[half]I just invented that!"
+	"\0\s[0]Have you ever saw a hat behaving like a duck?\w8\nIt smells like kitchen.\w8\w8\w8\n\n[half]Yeah, me neither."
+}
+	himstory
+{
+		"\0\s[0]Ursula helped me make a gift once,\w6\ it ended badly.\w8\n\ But I’m still here!"
+		"\0\s[0]\b2Did you know multiverses existed?\w8\n\They are big groups of universes!\w8\n\Many of my friends don’t belong to the one I’m living in,\w6\ I wasn’t even born in this one!\w8\n\Without Lint,\w6\ I probably wouldn’t know them…\w8\n\The ability to travel that far is rare…\w8\n\One time,\w6\ she took me to one where there were only two universes!\w8\n\Shouldn’t it be called a biverse then?\w8\n\The two universes were so deeply linked with each other,\w6\ doing something to one would have an effect on the other!!!\w8\n\We ate an apple in one\w6\ and a apple tree sprouted in the other!\w8\n\ We didn’t experiment much sadly…\w8\n\ We got chased out because of a hat thief!\w8\n\n[half]It’s complicated."
+		"\0\s[0]Hmm,\w6\ no I’m not ready to tell you this one,\w6\ I don’t know you well after all…\w8\n\Sorry."
+		"\0\s[0]One time,\w6\ Lint begged me to come with her trying out some parkour stuff and I agreed in the end.\w8\n\n[half]We both landed in a trashcan."
+		"\0\s[0]\b2I am not tall enough to reach the tallest cupboard in the kitchen so I always climb on the counter right below.\w8\n\One day,\w6\ I did so but someone left a jam toast and I didn’t see it and put my knee on and slipped.\w8\nI ended up in the sink and the toast on the ceiling.\w8\nUh."
+		"\0\s[0]Not proud of this one, but, once, Oriana managed to convince me my hands were my feet for a second...\w8\nI was 8, ok!!!"
+		"\0\s[0]Hmm it's a bit personal but... I can't use magic. Doc said I could but it would be very very bad, end of life bad, for me. I wouldn't know how to do it anyways... It makes propositions of magical sparrings a bit weird to refuse."
+		"\0\s[0]What would you do if someone told you you had very little left to live?\w8\nI wrote down a whole plan a few years back, just in case."
+		"\0\s[0]I brought Mu to play with kites when the wind is stronger every year!\w8\nWe decorated each,\w5\ even built some ourselves!\w8\nWe... may have lost some.\w8\nMaybe a lot in fact."
+		"\0\s[0]I dared Mal to let me ride on their shoulders for a whole day once!\w8\nWe laugh a lot!\w8\nMaybe more me than them."
+		
+}
+	
+	rockpaper
+{
+	"\0\s[0].............Paper!\w8\n\n[half]\0\s[6]Heyyyyy I won!\1\s[15]"
+	"\0\s[0].............Scissors!\w8\n\n[half]\0\s[9]Aw you beat me,\w6\ play again?\1\s[16]"
+	"\0\s[0].............Rock!\w8\n\n[half]\0\s[8]We both win?\w8\n\We both lost?\w8\n\0\s[99]...middle.\1\s[18]"
+}
+	srockpaper
+{
+	"\0\s[0].............Rock!\w8\n\n[half]\0\s[6]Heyyyyy I won!\1\s[15]"
+	"\0\s[0].............Paper!\w8\n\n[half]\0\s[9]Aw you beat me,\w6\ play again?\1\s[16]"
+	"\0\s[0].............Scissors!\w8\n\n[half]\0\s[8]We both win?\w8\n\We both lost?\w8\n\0\s[99]...middle.\1\s[18]"
+}
+	prockpaper
+{
+	"\0\s[0].............Scissors!\w8\n\n[half]\0\s[6]Heyyyyy I won!\1\s[15]"
+	"\0\s[0].............Rock!\w8\n\n[half]\0\s[9]Aw you beat me,\w6\ play again?\1\s[16]"
+	"\0\s[0].............Paper!\w8\n\n[half]\0\s[8]We both win?\w8\n\We both lost?\w8\n\0\s[99]...middle.\1\s[18]"
+}
+		
+	  //*******************************************************************
+
+//This envelope in particular I think is fun. You can use this in dialogue to pretend like your ghost is looking through your user's files!
+
+usersfolder
+{
+	"%(username)'s Recycle Bin"
+	"%(username)'s Document folder"
+	"%(username)'s secret folder"
+}
+
+
+//Now, this next envelope is unique. I've called it a double envelope at times, but this is actually technically an array. Note that it has a word, a comma, then another word. This is essentially a list being stored in this envelope. You can call one of the values by using brackets around the number of the list entry. So, the first value (the Korean word) would be %(lessonkor[0]) since all arrays start at 0. The second value (the definition) would be %(lessonkor[1]). If you have a longer array, like "word,word,word,word,word", you can keep calling values by changing the numbers, like %(lessonkor[5]) or %(lessonkor[10]). Arrays can be very powerful and useful for storing a lot of information in a condensed space, but I must level with you, I'm not very good at arrays or figuring out how to use them. :B They can be VERY useful though, if you can wrap your head around how they work. An example of pulling information from this array can be seen in aitalk.dic.
+
+// lessonkor
+// {
+	// "사과(sa-gua),apple"
+	// "노동(no-dong),labor"
+	// "손가락(son-ga-rak),finger"
+	// "마르크스(ma-r-k-s),Marx"
+	// "자본주의(ja-bon-ju-yi),capitalism"
+// }
+
+// //You can also format your envelopes like this as one line separated by semicolons, but personally I think the spaced lists above look nicer. It's up to you however you want to set them up.
+
+// blanklistparagraph
+// {
+	// "List paragraph 1"; "List paragraph 2"; "List paragraph 3"; "List paragraph 4"; "List paragraph 5";
+// }
+
+
+ //**** Don't touch this ***************************************************************
+ //This is code stuff and nothing for you to worry about, just save the .dic and move on! You're done!
+ 
+ On_\person
+{
+ 	person
+}

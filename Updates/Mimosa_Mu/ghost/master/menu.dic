@@ -1,0 +1,1680 @@
+﻿//---------------------------Menus--------------------------
+//This .dic file is primarily concerned with the double-click menus for each of your ghosts. If you don't want to have menus for your characters, you'd just have to delete the OnMouseDoubleClick functions near the end of mouse.dic and then ignore this file, as none of it will be called I believe. Menus can be cool though, since you can put stuff in them and create new functions if you know what you're doing. For example, I've added a lot of games and interactions and little linked icons to my Hunter Smoker ghost to keep track of their feelings and such. Much of that is pretty complicated though (and kind of messy, cough), so I won't go into it here, but I covered some of the concepts in the coding page of the walkthrough, and enterprising ghost makers can study the menu.dic file I set up for Hunter/Smoker and see how I put it together.
+
+//The complexity of this file depends on how customized you want your menus. If you just want to leave them as they are, then all you'll have to do is replace dialogue appropriately. Many of the options here can be ignored if you don't care. You only have to fill in the things that interest you! The default template dialogue will handle anything you don't. If you get bored or tired, you can skip a lot of these if it comes down to it. You can always go back and fill them in later too. Your ghost will function fine either way!
+
+//And of course, this file will always be waiting for you when you've gotten more familiar with ghosts and want to add cool features! It can be a flexible playground, but don't feel too stressed out about it. As mentioned, just fill in what comes to you and the template dialogue will cover the rest.
+
+
+
+//Make sure to read the walkthrough (http://www.ashido.com/ukagaka/) for more details about how to properly format ghost dialogue!
+//I will reiterate that you should be editing these in Notepad++, and in particular, you should set the Language to C (or Java I guess) to properly highlight all the text. It will make things A LOT EASIER for you, trust me! It will also help you keep track of your brackets in case you forget some. If you click on a line with a bracket in Notepad++, it should highlight where the other bracket ends, or turn purple if there's no finishing bracket (which you should definitely fix!)
+//It will also highlight my commented lines in green, so you'll know where they are. Any line beginning with // is a commented line that the code will not read. It's just for your reference!
+
+//If you see a big block of commented text you want to uncomment, highlight the text and then hit ctrl-shift-k in Notepad++ and that should uncomment it. Mostly this is intended for advanced users.
+
+
+//--OpenSakuraMenu
+//This is a bit of intro dialogue before the main character opens their menu. You can see below that there are three pieces of separate dialogue listed before it goes to MenuRun. The character will randomly choose one of those pieces of dialogue before opening the rest of their menu. You can customize this with individual greetings for the character, such as "Yes, %(username)?" or "Need something, %(username)?" or things like that. Note that none of the lines end with \e!
+//The \b2 tag tells the ghost to use their big balloon for this dialogue. If your menu has a lot of stuff, this'll probably look better than the small one.
+//If you don't want multiple responses before opening the menu, you can delete the dialogue and just leave MenuRun.
+
+OpenSakuraMenu
+{
+	if watchmode == "on"
+{ 
+        "\1\s[161]\0\s[162]"
+		--
+		MenuRun2
+  }
+	else
+{
+		"\0\s[5]\b2Hi, %(username)!\w8"
+		"\0\s[0]\b2Do you need something, %(username)?\w8"
+		"\0\s[0]\b2Time to chat!\w8"
+		--
+		MenuRun
+}
+}
+//--MenuRun
+//As you just saw above. This actually fills out the rest of the menu. If you're going to be adding or changing functions, this is where you'll be doing your edits.
+
+MenuRun : all
+ {	
+ 	wd = GetWeekDay
+ 	ap = GetAP
+	//These four statements basically get the day of the week, whether it's AM or PM, the hour, and the time. It's putting together the information to display the time at the bottom of the balloon. Pay it no mind.
+	--
+	"\n\n\_q\b2" //The \n\n means two new lines as detailed in the walkthrough, and \_q means quick session, meaning all the text from this point on will display instantly instead of a few letters at a time like normal ghost dialogue. You can ignore it.
+	--
+	if lastTalk != "" //What this does is check to see if the ghost has already said a random bit of dialogue on its own, essentially by seeing if the lastTalk thing is NOT empty (!= means "does not equal").
+	{
+	  "\![*]\q[Mind repeating?,OnLastTalk]\n"
+	  //If the ghost has said something, it will then display this menu option. You can replace "Repeat Last Dialogue" with whatever caption you like, such as "What were you saying?" or "What did you say?" or "Could you repeat that?" or something like that.
+	  
+	  //*********************Advanced User Info*******************************
+	  //These text boxes are meant for those who have an interest in expanding or using more complicated functions in their ghost. Also for my own reference in the future since I plan on using this template too, haha. If you have no interest in any of this and just want to keep things as simple as possible, feel free to skip these boxes.
+	  
+	  //I briefly touched in bootend.dic about \q, but I'll again cover it here. Pay very close attention to how this bit of dialogue is formatted. You'll see it goes \![*]\q[Displayed Name,linkedfunction]. Breaking it down, \![*] puts the balloon's option icon in front of the choice (usually a > or something), \q sets up the choice, Displayed Name which is the text that will display in the ghost's balloon, then linkedfunction, which is what the choice is linked to when the user clicks it. As you go through this file, look at how every menu option is set up, and you will see they all follow this format, give or take a \![*]. If you're going to be adding new options to menus or creating your own functions and such, make sure you follow this format and learn it well. Make sure to read the coding page of the walkthrough.
+	  //***********************************************************************
+	}
+	--
+ 	"\![*]\q[What's on your mind?,OnAiTalk]\n\n[half]"
+	
+	//"\![*]\q[Say something 2,OnAiTalk]\n"
+	
+	//This option will force the ghost to say something from aitalk if the user clicks it. Just replace "Say something" with whatever caption you think would be appropriate.
+	//Advanced users, you can add multiple captions for any option you add to a menu you make just like this, as long as you separate it from the other options into its own section with two dashes above and below. Note that you can't do this if the Function above has ": all" after it, since that will put every potential option in. You'll have to set it your menu up differently to take --s into account. I commented it out here because of ": all" above, but you can see the basic idea.
+	--
+	"\![*]\q[Ask something,askmenu]\n"
+	"\![*]\q[Give something,giftmenu]\n"
+	"\![*]\q[Play,gamemenu]\n"
+	"\![*]\q[Show me a picture,picmenu]\n"
+	"\![*]\q[Watch something with me!,screentime]\n\n[half]"
+
+	"\![*]\q[Config Menu,configmenu]\n"
+	"\![*]\q[Functions,dosomething]\n\n[half]"
+ 	"\![*]\q[Nevermind,CANCEL]\n\n\n[half]%(wd) %(nowhour):%(nowmin) %(ap), %(month)/%(day)/%(year)\e"
+	
+	//These three lead to the Config Menu, the Function menu, and Cancel. You can leave these alone if you like. All the envelopes at the end (see word.dic) basically display the year, month, day, weekday, and time.
+}
+
+MenuRun2 : all
+ {	
+ 	wd = GetWeekDay
+ 	ap = GetAP
+	//These four statements basically get the day of the week, whether it's AM or PM, the hour, and the time. It's putting together the information to display the time at the bottom of the balloon. Pay it no mind.
+	--
+	"\_q" //The \n\n means two new lines as detailed in the walkthrough, and \_q means quick session, meaning all the text from this point on will display instantly instead of a few letters at a time like normal ghost dialogue. You can ignore it.
+	--
+	"\![*]\q[Enough watching.,watchoff]\n\n[half]"
+}
+//Leave this alone
+OnLastTalk 
+{
+"%(lastTalk)\e"
+}
+
+//This is figuring out what day of the week it is. Leave it alone.
+GetWeekDay
+{
+	if weekday == 0
+	{"Sun"}
+	elseif weekday == 1
+	{"Mon"}
+	elseif weekday == 2
+	{"Tue"}
+	elseif weekday == 3
+	{"Wed"}
+	elseif weekday == 4
+	{"Thu"}
+	elseif weekday == 5
+	{"Fri"}
+	else
+	{"Sat"}
+}
+
+//This is finding out whether it's AM or PM. Leave it alone.
+GetAP
+{
+ 	if hour >= 0 && hour <= 11
+ 		{"AM"}
+ 	else
+ 		{"PM"}
+}
+
+nowhour
+{
+	if hour12 == 0; "1"
+	else; "%(hour12)"
+}
+
+nowmin
+{
+	if minute >= 0 && minute <=9; "0%(minute)"
+	else; "%(minute)"
+}
+
+
+//If someone selects an option linked to BACKTOMENU, it will go back to MenuRun.
+//Advanced users, note that this is formatted as Select.linkedfunction? Remember how it went \q[Displayed Name,linkedfunction] above? When a user clicks an option that doesn't begin with On, they'll be linked to Select.linkedfunction. Pay close attention as we go through and you'll see this in action.
+
+Select.BACKTOMENU
+	{
+		MenuRun
+	}
+
+//If someone selects configmenu, this will lead to TalkConfig.
+Select.configmenu
+	{
+		TalkConfig
+	}
+
+
+Select.askmenu
+{
+	WhoTalk
+}
+
+WhoTalk : all
+{
+	"\0\s[0]\b2Ask something about:\n\n[half]"
+
+	"\![*]\q[His friends and co,askfriends]\n"
+	"\![*]\q[His family,askfamily]\n"
+	"\![*]\q[His daily life,asklife]\n"
+	"\![*]\q[The weather,askweather]\n\n[half]"
+	"\![*]\q[Tell me a story,askstory]\n\n[half]"
+
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.askfriends
+{
+	WhichFriend
+}
+
+WhichFriend : all
+{
+	"\0\s[0]\b2Tell me something about:\n\n[half]"
+
+	"\![*]\q[LINT,asklint]\n"
+	"\![*]\q[MYNN,askmynn]\n"
+	"\![*]\q[VARY and SHIFT,askpadish]\n"
+	"\![*]\q[NIP,asknip]\n"
+	"\![*]\q[FANCY,askfancy]\n"
+	"\![*]\q[TODDH,asktoddh]\n"
+	"\![*]\q[Someone else,askelse]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.asklint
+{
+	QuestionChaos
+}
+QuestionChaos
+{
+	"%(lintanswer)"
+}
+
+Select.askmynn
+{
+	QuestionFire
+}
+
+QuestionFire
+{
+	"%(mynnanswer)"
+}
+
+Select.askpadish
+{
+	QuestionPadish
+}
+
+QuestionPadish
+{
+	"%(padishanswer)"
+}
+
+Select.asknip
+{
+	QuestionBunny
+}
+
+QuestionBunny
+{
+	"%(nipanswer)"
+}
+
+Select.askfancy
+{
+	QuestionCrown
+}
+
+QuestionCrown
+{
+	"%(fancyanswer)"
+}
+
+Select.asktoddh
+{
+	QuestionWing
+}
+
+QuestionWing
+{
+	"%(toddhanswer)"
+}
+
+Select.askelse
+{
+	"%(elseanswer)"
+}
+
+Select.askfamily
+{
+	WhichFamily
+}
+
+WhichFamily : all
+{
+	"\0\s[0]\b2Tell me something about:\n\n[half]"
+
+	"\![*]\q[MU,askmu]\n"
+	"\![*]\q[SHINE,askshine]\n"
+	"\![*]\q[MALIGNANCE,askmal]\n"
+	"\![*]\q[Your parents,askparents]\n"
+	"\![*]\q[Someone somewhat related,askrelated]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.askmu
+{
+	"%(muanswer)"
+}
+Select.askshine
+{
+	"%(shineanswer)"
+}
+Select.askmal
+{
+	"%(malanswer)"
+}
+Select.askparents
+{
+	"%(parentsanswer)"
+}
+Select.askrelated
+{
+	"%(relatedanswer)"
+}
+Select.asklife
+{
+	DailyLife
+}
+
+DailyLife : all
+{
+	"\![*]\q[What were you doing?,askbefore]\n"
+	"\![*]\q[How are you doing?,asknow]\n"
+	"\![*]\q[What do you like?,asklike]\n"
+	"\![*]\q[What do you hate?,askunlike]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.askbefore
+{
+	"%(pastanswer)"
+}
+
+Select.asknow
+{
+	NowActivity
+}
+
+NowActivity
+{
+	"%(nowanswer)"
+}
+
+Select.asklike
+{
+	LikeActivity
+}
+
+LikeActivity
+{
+	"%(likeanwser)"
+}
+
+Select.askunlike
+{
+	UnlikeActivity
+}
+
+UnlikeActivity
+{
+	"%(unlikeanwser)"
+}
+
+Select.askweather
+{
+	WhatWeather
+}
+
+WhatWeather
+{
+	"\0\s[8]It is weathery.\w8\.\w8\."
+}
+
+Select.askstory
+{
+	WhatStory
+}
+
+WhatStory : all
+{
+	"\0\s[5]\b2What kind of story?\n\n[half]"
+
+	"\![*]\q[A funny one!,askfunny]\n"
+	"\![*]\q[A sad one...,asksad]\n"
+	"\![*]\q[A strange one?,askstrange]\n"
+	"\![*]\q[A personal one.,askpersonal]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.askfunny
+{
+	FunnyStory
+}
+
+FunnyStory
+{
+	"%(hahastory)"
+}
+
+Select.asksad
+{
+	SadStory
+}
+
+SadStory
+{
+	"%(bouhoustory)\!"
+}
+
+	bouhoustory
+{
+	"\b2\0\s[0]Do mama cats cry for long when they take their babies away for adoption?\w8\nDo they quiet their heart to the world because it’s just how it works\w5\ and weep silently at night?\w8\nDo they roll onto every smell to keep the memories fresh as long as it is still here?\w8\nDo they think they died?\w8\nAre those demons or angels that came to steal them?\w8\nDo they have other babies and confuse the new with the old…\w9\n\n[half]Can a story be only made of questions?\w8\nI think so.\n\n[half]\![*]\q[Nevermind,CANCEL]\n"
+	"\b2\0\s[0]A bird sits and waits on a beach.\w8\nThe funny way birds sit!\w8\nIt looks at the water coming and going not so far from its feet.\w8\nIt was more far earlier.\w8\nSmall,\w5\ tiny,\w5\ nothing but a dream of times to come.\w8\nNow the water is close and impressive and it’s almost to its feet.\w8\nIts little breast expands and…\w5\ deexpands?\w5\ And its little beady eyes follow the movements.\w8\nA cool breeze whispers at its ears under the feathers.\w8\n\n[half] ‘Fly, little bird, fly! The see will swallow your soul and you will never see the sky again!’\w8\n\n[half]The shivering bird did not move beyond shivering as its toes dipped into the salted water.\w8\n\n[half] ‘Breeze,\w5\ I can’t,\w5\ a shell shined so hard earlier,\w5\ it distracted me,\w5\ my wings are broken and my feet hurt.\w8\nLet me go,\w5\ how can I keep being a bird if I can’t fly or hunt the worm?’\w8\n\n[half]The breeze wept but it understands.\w8\nDespite what the bird said it wanted,\w5\ the breeze stayed until the bird disappeared fully,\w5\ washed out by the waves.\w8\w5\nSome nights you can even hear it sings for the poor bird…\w8\w8\w8\n\n[half]How does one end a story?\w8\nEnd?\w8\nIt’s finished???\n\n[half]\![*]\q[Nevermind,CANCEL]\n"
+}
+
+
+Select.askstrange
+{
+	StrangeStory
+}
+
+StrangeStory
+{
+	"%(uhstory)"
+}
+
+Select.askpersonal
+{
+	PersoStory
+}
+
+PersoStory
+{
+	"%(himstory)"
+}
+
+
+Select.giftmenu
+	{
+		ChoiceGift
+	}
+	
+ChoiceGift : all
+{
+	"\![*]\q[Give gift to Mimosa,mimosagift]\n"
+	"\![*]\q[Give gift to Mu,mugift]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.mimosagift
+{
+	KindGift
+}
+
+KindGift : all
+{
+	"\![*]\q[Give him a toy,toygift]\n"
+	"\![*]\q[Give him a flower,flowergift]\n"
+	"\![*]\q[Give him a snack,snackgift]\n"
+	"\![*]\q[Give him a smile,smilegift]\n"
+	"\![*]\q[Give him a book,bookgift]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.toygift
+{
+	"%(mimosatoy)"
+}
+
+Select.flowergift
+{
+	"%(mimosaflower)"
+}
+
+Select.snackgift
+{
+	"%(mimosasnack)"
+}
+
+Select.smilegift
+{
+	"%(mimosasmile)"
+}
+
+Select.bookgift
+{
+	"%(mimosabook)"
+}
+
+Select.mugift
+{
+	mKindGift
+}
+
+mKindGift : all
+{
+	"\![*]\q[Give her a toy,mtoygift]\n"
+	"\![*]\q[Give her a flower,mflowergift]\n"
+	"\![*]\q[Give her a snack,msnackgift]\n"
+	"\![*]\q[Give her a smile,msmilegift]\n"
+	// "\![*]\q[Give her a book,mbookgift]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.mtoygift
+{
+	"%(mutoy)"
+}
+
+
+Select.mflowergift
+{
+	"%(muflower)"
+}
+
+Select.msnackgift
+{
+	"%(musnack)"
+}
+
+Select.msmilegift
+{
+	"%(musmile)"
+}
+
+// Select.mbookgift
+// {
+	// "%(mubook)"
+// }
+	
+Select.gamemenu
+{
+	WhatGame
+}
+
+WhatGame : all
+{
+	"\0\s[5]\b2What do you want to play?\n\n[half]"
+
+	"\![*]\q[Rock Paper Scissors,playrock]\n"
+	// "\![*]\q[Guess the word,playword]\n"
+	"\![*]\q[Snail race,playrace]\n"
+	"\![*]\q[Red or black?,playcolor]\n"
+	"\![*]\q[Two truths and a lie,playlie]\n"
+	"\![*]\q[Exquisite corpse,playcorpse]\n"
+	"\![*]\q[Tongue twisters,playtwist]\n\n[Half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.playrock
+{
+	GameStart
+}
+
+GameStart : all
+{
+	"\1\s[10]\0\s[0]\b2Ready? 1, 2, 3:\n\n[half]"
+
+	"\![*]\q[Rock!,rockchoice]\n"
+	"\![*]\q[Paper!,paperchoice]\n"
+	"\![*]\q[Scissors!,scissorschoice]\n"
+	"\![*]\q[The well!,wellchoice]\n\n[half]"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}
+
+Select.rockchoice
+{
+	"%(rockpaper)"
+}
+
+Select.paperchoice
+{
+	"%(prockpaper)"
+}
+
+Select.scissorschoice
+{
+	"%(srockpaper)"
+}
+
+Select.wellchoice
+{
+	"\0\s[0]Hey!\w8\n\That's cheating!"
+}
+
+// Select.playword
+// {
+	// ""
+// }
+
+Select.playrace
+{
+	"\1\s[56]\0\s[5]SNAIL RACE!\w8\nI'm taking Slug,\w5 Mu will take Goldie...\w8\nYou can have CoolHat!\x\c%(racesnail)"
+}
+
+	racesnail
+{
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[118]\w8\w8\w8\1\s[119]\w8\w8\w8\1\s[120]\w8\w8\w8\1\s[121]\w8\w8\w8\1\s[122]\w8\w8\w8\1\s[123]\w8\w8\w8\w8\1\s[10]\0\s[5]I won!"
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[124]\w8\w8\w8\1\s[125]\w8\w8\w8\1\s[126]\w8\w8\w8\1\s[127]\w8\w8\w8\w8\1\s[16]\0\s[98]Mu won..."
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[128]\w8\w8\w8\1\s[129]\w8\w8\w8\1\s[130]\w8\w8\w8\1\s[131]\w8\w8\w8\1\s[132]\w8\w8\w8\w8\1\s[10]\0\s[0]You won!"
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[133]\w8\w8\w8\1\s[134]\w8\w8\w8\1\s[135]\w8\w8\w8\1\s[136]\w8\w8\w8\1\s[137]\w8\w8\w8\1\s[138]\w8\w8\w8\w8\1\s[42]\0\s[99]You won...\w5I guess..."
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[139]\w8\w8\w8\1\s[140]\w8\w8\w8\1\s[141]\w8\w8\w8\1\s[142]\w8\w8\w8\1\s[143]\w8\w8\w8\w8\1\s[10]\0\s[6]You won,\w5 pfffthehehe!\w5\1\s[11]"
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[139]\w8\w8\w8\1\s[140]\w8\w8\w8\1\s[141]\w8\w8\w8\1\s[142]\w8\w8\w8\1\s[144]\w8\w8\w8\w8\1\s[10]\0\s[6]I won,\w5 pfffthehehe!\w5\1\s[17]"
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[145]\w8\w8\w8\1\s[146]\w8\w8\w8\1\s[147]\w8\w8\w8\1\s[148]\w8\w8\w8\1\s[149]\w8\w8\w8\1\s[150]\w8\w8\w8\w8\1\s[16]\0\s[5]I won!"
+	"\b[-1]\0\s[116]\1\s[117]\w8\w8\w8\w8\1\s[145]\w8\w8\w8\1\s[146]\w8\w8\w8\1\s[147]\w8\w8\w8\1\s[148]\w8\w8\w8\1\s[149]\w8\w8\w8\1\s[151]\w8\w8\w8\w8\1\s[16]\0\s[0]Mu won!"
+
+}
+
+Select.playcolor
+{
+	"\b2\1\s[10]\0\s[0]Red or black!\w8\nThis one is easy,\w5\ I have a card and you need to guess if it's a black card or a red card.\w8\0\s[155]\w8\n\n[half]\![*]\q[It's red!,redsay]\n\![*]\q[It's black!,blacksay]\n"
+}
+
+Select.redsay
+{
+	"\0\s[0]And it waaaas...\w5\ the %(redcard)!\w8\n\0\s[5]You guessed right!\0\s[0]\w8\n\n[half]Can you guess the next one?\w8\0\s[155]\w8\n\n[half]\![*]\q[Red again!,redsay]\n\![*]\q[Black!,blacksay]\n"
+	"\0\s[0]And it waaaas...\w5\ the %(blackcard)!\w8\n\0\s[6]Aw, you guessed wrong!\w8\n\n[half]\0\s[0]Thanks for playing with me!"
+}
+
+Select.blacksay
+{
+	"\0\s[0]And it waaaas... the %(blackcard)!\w8\n\0\s[5]You guessed right!\0\s[0]\w8\n\n[half]Can you guess the next one?\w8\0\s[155]\w8\n\n[half]\![*]\q[Red!,redsay]\n\![*]\q[Black again!,blacksay]\n"
+	"\0\s[0]And it waaaas...\w5\ the %(redcard)!\w8\n\0\s[6]Aw, you guessed wrong!\w8\n\n[half]\0\s[0]Thanks for playing with me!"
+}
+
+Select.playlie
+{
+	truthorlie
+}
+
+truthorlie
+{
+	"\1\s[10]\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I can't see from my left eye.\n\![*]My tentacles are dead weight.\n\![*]I thought all zebras were babies.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,eyeblind] \q[The second?,deadtentacle] \q[The third?,zebrababy]\x"
+	"\1\s[10]\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I have a sewing knife.\n\![*]I'm an incredible fighter.\n\![*]I have played video games before.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,sewingknife] \q[The second?,goodfighter] \q[The third?,videogamer]\x"
+	"\1\s[10]\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I sleep on a bean bag.\n\![*]I want to be a storyteller later.\n\![*]I have a deep hate of strawberries.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,beanbagsleeper] \q[The second?,futurejob] \q[The third?,strawberryhater]\x"
+	"\1\s[10]\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I am a baby.\n\![*]My leg got hurt recently.\n\![*]There are fluorescent stars on my room's ceiling.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,babybe] \q[The second?,recenthurt] \q[The third?,starceiling]\x"
+	
+}
+
+Select.eyeblind
+{
+		"\0\s[5]Annnnd...\w5\ that's indeed the lie,\w5\ congratulations!\w8\nI can see just fine from that eye!\w8\nI don't have any peripheral vision on this side however..."
+}
+Select.deadtentacle
+{
+		"\0\s[6]Annnnd...\w5\ nah that's true.\w8\n\0\s[0]I can't move them at all.\w8\nI sometimes need to hold onto them to avoid tripping...\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I can't see from my left eye.\n\![*]My tentacles are dead weight.\n\![*]I thought all zebras were babies.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,eyeblind] \q[The second?,deadtentacle] \q[The third?,zebrababy]\x"
+
+}
+Select.zebrababy
+{
+	"\0\s[6]Nah I really did think that at one point...\w8\n\0\s[0]But it just seemed logical when I was 8...\w8\nStripes are usually for kids...\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I can't see from my left eye.\n\![*]My tentacles are dead weight.\n\![*]I thought all zebras were babies.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,eyeblind] \q[The second?,deadtentacle] \q[The third?,zebrababy]\x"
+}
+Select.sewingknife
+{
+	"\0\s[6]How dare you doubt my trusty sewing knife!\w8\nIt's not that hard to sew with a knife with some training.\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I have a sewing knife.\n\![*]I'm an incredible fighter.\n\![*]I have played video games before.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,sewingknife] \q[The second?,goodfighter] \q[The third?,videogamer]\x"
+
+}
+Select.goodfighter
+{
+	"\0\s[5]Yeah, that's the lie!\0\s[0]\w8\nI have the weakest attacks in my circle.\w8\nNo magic and all that.\w8\nBut I have a very solid defense!\w8\nAnd feet to run!"
+}
+Select.videogamer
+{
+	"\0\s[6]Uhuhuh, wrong!\w8\nI mean...I only played a few games,\w5\ but that still counts!\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I have a sewing knife.\n\![*]I'm an incredible fighter.\n\![*]I have played video games before.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,sewingknife] \q[The second?,goodfighter] \q[The third?,videogamer]\x"
+
+}
+Select.beanbagsleeper
+{
+	"\0\s[6]That's the answer of someone who never slept on a bean bag!\0\s[5]\w8\nNO BED,\w5\ONLY BEANBAG!\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I sleep on a bean bag.\n\![*]I want to be a storyteller later.\n\![*]I have a deep hate of strawberries.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,beanbagsleeper] \q[The second?,futurejob] \q[The third?,strawberryhater]\x"
+}
+Select.futurejob
+{
+	"\0\s[6]Wrongidy wrong!\w8\n\0\s[0]I think it would be nice to be a storyteller!\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I sleep on a bean bag.\n\![*]I want to be a storyteller later.\n\![*]I have a deep hate of strawberries.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,beanbagsleeper] \q[The second?,futurejob] \q[The third?,strawberryhater]\x"
+}
+Select.strawberryhater
+{
+	"\0\s[5]You found the lie!\w8\n\0\s[0]I have nothing against strawberries...\w8\nThey are yummy!"
+}
+Select.babybe
+{
+	"\0\s[5]Obviously, that's the lie!\w8\nI'm already 12!"
+}
+Select.recenthurt
+{
+	"\0\s[6]Wrong!\w8\n\0\s[0]...I did have an accident.\w8\nI don't really want to talk about it.\w8\nHe feels enough guilty about it already.\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I am a baby.\n\![*]My leg got hurt recently.\n\![*]There are fluorescent stars on my room's ceiling.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,babybe] \q[The second?,recenthurt] \q[The third?,starceiling]\x"
+}
+Select.starceiling
+{
+	"\0\s[6]That's not the lie!\w8\nI have a cool star path on my room's ceiling to never lose the door!\n\n[half]\![*]\q Try again?\x\c\0\s[0]\b2Two truths and a lie!\w8\n\Find the lie between these 3!\n\n[half]\![*]I am a baby.\n\![*]My leg got hurt recently.\n\![*]There are fluorescent stars on my room's ceiling.\n\n[half]\w8\Sooo,\w5\ which one is it?\w8\n\q[The first?,babybe] \q[The second?,recenthurt] \q[The third?,starceiling]\x"
+}
+
+Select.playcorpse
+{
+	"\0\s[0]Exquisite corpse!\w8\nLet's create a funny sentence together!\x\c\w8Give me an adjective first and when I ask again, give me a noun!\w8\nMu and I will do the rest.\w5\nBe creative!\![open,inputbox,OnCorpse,-1]\x\c\1\s[19]"
+}
+
+// GatheringInfo
+// {
+// "So, what's your favorite type of ice cream?\![open,inputbox,OnIceCream,-1]"
+// }
+
+OnCorpse
+{
+Adjective = reference0
+Noun= reference1
+
+"\1\s[19]\w8\1\s[153]>you can read on the page:\n\n[half] 'A %(Adjective) %(Nounlist) %(Verblist)...\![open,inputbox,OnCorpse2]"
+"\1\s[19]\w8\1\s[153]>you can read on the page:\n\n[half] 'The %(Adjective) %(Nounlist) %(Verblist)...\![open,inputbox,OnCorpse2]"
+"\1\s[19]\w8\1\s[153]>you can read on the page:\n\n[half] 'This %(Adjective) %(Nounlist) %(Verblist)...\![open,inputbox,OnCorpse2]"
+"\1\s[19]\w8\1\s[153]>you can read on the page:\n\n[half] 'That %(Adjective) %(Nounlist) %(Verblist)...\![open,inputbox,OnCorpse2]"
+"\1\s[19]\w8\1\s[153]>you can read on the page:\n\n[half] 'A %(Adjective) %(Nounlist) %(Verblist)...\![open,inputbox,OnCorpse2]"
+// "%(Adjective) %(Nounlist)%(Verblist)under the rainbow!"
+// "%(Adjective) %(Nounlist)%(Verblist)before the shower stopped working."
+// "%(Adjective) %(Nounlist)%(Verblist)depending on the weather."
+// "%(Adjective) %(Nounlist)%(Verblist)like a saturated sunshine!"
+// "%(Adjective), %(Nounlist)%(Verblist)that's true!"
+
+
+} 
+
+OnCorpse2
+{
+Noun = reference0
+
+" \w8\0\s[8]\w8\w8\0\s[0]...a %(Adjectivelist) %(Noun)!'\w8\n\n[half]Hehe,\0\s[6]\w5 what a silly sentence!\w5\1\s[16]"
+" \w8\0\s[8]\w8\w8\0\s[0]...the %(Adjectivelist) %(Noun)!'\w8\n\n[half]Hehe,\0\s[6]\w5 what a silly sentence!\w5\1\s[16]"
+" \w8\0\s[8]\w8\w8\0\s[0]...this %(Adjectivelist) %(Noun)!'\w8\n\n[half]Hehe,\0\s[6]\w5 what a silly sentence!\w5\1\s[16]"
+" \w8\0\s[8]\w8\w8\0\s[0]...that %(Adjectivelist) %(Noun)!'\w8\n\n[half]Hehe,\0\s[6]\w5 what a silly sentence!\w5\1\s[16]"
+" \w8\0\s[8]\w8\w8\0\s[0]...a %(Adjectivelist) %(Noun).\w8\n\n[half]Hehe,\0\s[6]\w5 what a silly sentence!\w5\1\s[16]"
+// "%(Adjective) %(Nounlist)%(Verblist)under the rainbow!"
+// "%(Adjective) %(Nounlist)%(Verblist)before the shower stopped working."
+// "%(Adjective) %(Nounlist)%(Verblist)depending on the weather."
+// "%(Adjective) %(Nounlist)%(Verblist)like a saturated sunshine!"
+// "%(Adjective), %(Nounlist)%(Verblist)that's true!"
+
+
+} 
+Nounlist
+{
+	"teacher"
+    "doctor"
+    "chef"
+    "student"
+    "pilot"
+    "firefighter"
+    "lawyer"
+    "mechanic"
+    "engineer"
+    "farmer"
+}
+
+Verblist
+{
+	"is"
+	"goes"
+	"towards"
+	"eats"
+	"drinks"
+	"sings"
+	"walks"
+	"picks"
+	"draws"
+	"carries"
+	"likes"
+	"hates"
+	"wears"
+	"ignores"
+	"befriends"
+	"looks"
+	"at" 
+	"shouts at"
+	"dives into"
+	"hugs"
+	"knows of" 
+	"works with"
+	"helps"
+	"kidnaps"
+	"hears"
+	"sits on"
+	"meets"
+	"sells"
+}
+
+Adjectivelist
+{
+	"adorable"
+	"adventurous"
+	"aggressive"
+	"alive"
+	"amused"
+	"angry"
+	"annoying"
+	"anxious"
+	"ashamed"
+	"average"
+	"awful"
+	"bad"
+	"beautiful"
+	"best"
+	"black"
+	"blue"
+	"blushing"
+	"bored"
+	"brave"
+	"bright"
+	"busy"
+	"calm"
+	"cautious"
+	"cheerful"
+	"clean"
+	"clever"
+	"cloudy"
+	"clumsy"
+	"colorful"
+	"comfortable"
+	"confused"
+	"crazy"
+	"cruel"
+	"curious"
+	"cute"
+	"dangerous"
+	"dark"
+	"defeated"
+	"delightful"
+	"depressed"
+	"determined"
+	"disgusted"
+	"dizzy"
+	"elegant"
+	"embarrassed"
+	"energetic"
+	"evil"
+	"excited"
+	"expensive"
+	"famous"
+	"fancy"
+	"fantastic"
+	"fierce"
+	"filthy"
+	"foolish"
+	"friendly"
+	"funny"
+	"gentle"
+	"good"
+	"gorgeous"
+	"graceful"
+	"grumpy"
+	"handsome"
+	"happy"
+	"healthy"
+	"helpful"
+	"hilarious"
+	"horrible"
+	"hungry"
+	"hurt"
+	"important"
+	"innocent"
+	"itchy"
+	"jealous"
+	"jittery"
+	"kind"
+	"lazy"
+	"light"
+	"lonely"
+	"long"
+	"lovely"
+	"lucky"
+	"magnificent"	
+	"modern"
+	"muddy"
+	"mushy"
+	"mysterious"
+	"nasty"
+	"nervous"
+	"nice"
+	"obnoxious"
+	"odd"
+	"outrageous"
+	"perfect"
+	"poor"
+	"powerful"
+	"precious"
+	"proud"
+	"real"
+	"relieved"
+	"rich"
+	"scary"
+	"selfish"
+	"shiny"
+	"shy"
+	"silly"
+	"sleepy"
+	"smiling"
+	"sparkling"
+	"splendid"
+	"strange"
+	"stupid"
+	"super"
+	"talented"
+	"tasty"
+	"terrible"
+	"thankful"
+	"thoughtful"
+	"tired"
+	"tough"
+	"ugly"
+	"uninterested"
+	"unusual"
+	"upset"
+	"vast"
+	"victorious"
+	"weary"
+	"wicked"
+	"wild"
+	"witty"
+	"worried"
+	"wrong"
+	"zealous"
+}
+
+
+
+Select.playtwist
+{
+	"%(tonguetwisters)"
+}
+	
+ 
+	tonguetwisters
+{
+	"\b2\_q>Red lorry, yellow lorry.<\_q\n\n[half]\0\s[0]Red lorry, yellow lorry! Red lorry, yellow lorry! Led worry- \0\s[9]Agh no...\w8\w8\w8\w5\w5\n\n[half]\0\s[0]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>She sees cheese.<\_q\n\n[half]\0\s[0]\w8\She sees cheese.\w5\ She sees cheese.\w5\ She sees cheese.\0\s[5]\w8\nIt's too easy!\w8\nSee shees cheese-\w8\0\s[9] Aw...\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Sheep should sleep in the shed.<\_q\n\n[half]\0\s[0]Sheep should sleep in the shed. Sheep should sleep in the shed.\s[8]\nI don't find this one hard?\w8\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Greek grapes, Greek grapes, Greek grapes.<\_q\n\n[half]\0\s[5]Greep grakes!\w8\nOh,\w5\0\s[0] ok,\w5\ that was fast...\w8\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Lucky rabbits like to cause a ruckus.<\_q\n\n[half]\0\s[0]Lucky rabbits like to cause a ruckus.\w8\0\s[5] Easy-peasy!!!\w8\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Katie caught the kitten in the kitchen.<\_q\n\n[half]\0\s[0]Katie caught the kitchen in the kitten.\w8\1\s[16]\0\s[6] NO.\w8\w8\w8\n\n[half]\0\s[0]Your turn!\x\c\1\s[10]\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Which wristwatches are Swiss wristwatches?<\_q\n\n[half]\0\s[0]Which witchwatches-\w5\Not that.\w8\0\s[5]\nBut admit witchwaches would be far cooler!\1\s[57]\0\s[0]\w8\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>I scream, you scream, we all scream for ice cream!<\_q\w8\n\n[half]\0\s[0]I scream,\w3\ you scream,\w3\ we all scream for ice cream!\w8%(muscream)\0\s[5] YAY!\w8\ I LOVE ICE CREAM!\w8\w8\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Give papa a cup of proper coffee in a copper coffee cup.<\_q\n\n[half]\0\s[0]Give papa a cup of proper coffee in a copper coffee cup.\w8\n\0\s[8]Mmmm, a copper coffee cup?\w8\ Why must it be a copper cup?\w8\nDoes it make the coffee taste better?\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Five frantic frogs fled from fifty fierce fishes.<\_q\n\n[half]\0\s[0]Five frantic frogs fled from fifty fierce fishes!\w8\n\0\s[5]It's funny to imagine!\w8\1\s[10]\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Peter Piper picked a peck of pickled peppers\nA peck of pickled peppers Peter Piper picked\nIf Peter Piper picked a peck of pickled peppers\nWhere’s the peck of pickled peppers Peter Piper picked?<\_q\0\s[0]\n\n[half]Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked. If Peter Piper picked a peck of pickled peppers,\w5 where’s the peck of pickled peppers Peper Piper picked?\w8\nUh,\w8\0\s[5]Peper Piper is a better name!\w8\n\n[half]\0\s[0]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>How much wood would a woodchuck chuck if a woodchuck could chuck wood?\nHe would chuck, he would, as much as he could, and chuck as much wood As a woodchuck would if a woodchuck could chuck wood<\_q\n\n[half]\0\s[0]How much wood would a woodchuck chuck if a woodchuck could chuck wood? He would chuck, he would, as mulch- \0\s[3]ugh nooooo.\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Betty Botter bought some butter\nBut she said the butter’s bitter\nIf I put it in my batter, it will make my batter bitter\nBut a bit of better butter will make my batter better\nSo ‘twas better Betty Botter bought a bit of better butter<\_q\n\n[half]\0\s[0]Betty Botter bought some butter but she said the butter's bitter if I put it in my batter, it will make my batter bitter. But a bit of better butter will make my batter better so 'twas better Betty Botter bought a bet- a bit of better butter!\n\0\s[9]NO I DIDN'T FAIL AT THE END, I did it perfectly!\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>Silly Sally swiftly shooed seven silly sheep.\nThe seven silly sheep Silly Sally shooed Shilly-shallied south.\nThese sheep shouldn't sleep in a shack; Sheep should sleep in a shed.<\_q\n\n[half]\0\s[0]Silly Sally swiftly shooed seven silly sheep. The seven silly sheep Silly Sally shooed Shilly-shallied south. These sheep shouldn't sleep in a shack, Sheep should sleep in a shed.\1\s[10]\0\s[8]\n\n[half]That one is weird... \w8What does it mean,\w5 'shilly-shallied south'???\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>All I want is a proper cup of coffee,\nMade in a proper copper coffee pot\nI may be off my dot\nBut I want a cup of coffee\nFrom a proper coffee pot.\n\n[half]Tin coffee pots and iron coffee pots\nThey're no use to me -\nIf I can't have a proper cup of coffee\nIn a proper copper coffee pot\nI'll have a cup of tea.<\_q\n\n[half]\0\s[0]All I want is a proper cup of coffee, made in a proper copper coffee pot. I may be off my dot but I want a cup of coffee from a proper coffee cop-\w5\0\s[2] wait a-\w5 coffee cop?\n\w8\0\s[0]Is there a coffee police???\1\s[16]\w8\0\s[0]\n\n[half]Your turn!\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>One-One was a racehorse.\nTwo-Two was one, too.\nWhen One-One won one race,\nTwo-Two won one, too.<\_q\n\n[half]\0\s[0]One-One was a ralceworse.\w8\n\0\s[1]Bad start-\w8\w8\n\0\s[0]Two-Two was one, too. When One-One won one race, Two-Two won one, too.\w8\n...Nailed it.\w8\0\s[0]\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>I wish to wish the wish you wish to wish, but if you wish the wish the witch wishes, I won't wish the wish you wish to wish.<\_q\n\n[half]\0\s[0]I wish to wish the wish you wish to wish, but if you wish the wish the wish- witch\w5 wishes, I won't wish the wish you wish to wish.\nThat 'witch' after all those 'wish' was a mean trap...\w8\n\n[half]Your tune!\w5\0\s[1] I mean turn.\x\c\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+	"\b2\_q>A tutor who tooted the flute tried to tutor two tooters to toot.\nSaid the two to their tutor: Is it harder to toot, Or to tutor two tooters to toot?'<\_q\n\n[half]\0\s[0]A tootor who tuted the flute tried to twotor two tooters to toot.\nSaid the two to their tootor:'Is it harder to toot,\w5 or two tootor tu tooters to toot?\n\w8\1\s[16]\0\s[5]Nailed it.\w8\0\s[0]\n\n[half]Your turn!\x\c\1\s[10]\0\s[0]Soooo,\w5\ were you able to say it?\n\n[half]\![*]\q[Yes easy-peasy!,easypeasy]\n\![*]\q[After a few tries.,midsuccess]\n\![*]\q[No...,failtwist]"
+
+}
+
+muscream
+	{
+		"\1\s[70]"
+		"\1\s[71]"
+		"\1\s[72]"
+		"\1\s[73]"
+	}
+
+
+Select.easypeasy
+{
+	"%(goodtwist)"
+}	
+
+Select.midsuccess
+{
+	"%(midtwist)"
+}
+
+Select.failtwist
+{
+	"%(badtwist)"
+}
+
+
+goodtwist
+{
+	"\0\s[5]What a champ!"
+	"\0\s[5]Here comes the word master!"
+	"\0\s[5]Your tongue has twisted perfectly today."
+}
+
+midtwist
+{
+	"\0\s[5]But you did it in the end!\w8\nYou can be proud of yourself!"
+	"\0\s[0]You didn't give up and success curled onto your lap!\nWhere did I heard that..."
+	"\0\s[5]I say it count as a victory!"
+}
+
+badtwist
+{
+	"\0\s[6]Hey, better luck next time."
+	"\0\s[0]Aw, rest your tongue and try again later!"
+	"\0\s[6]He, I am better than you at it then."
+}
+	
+Select.picmenu
+{
+	PictureShow
+}
+
+PictureShow
+{
+	"%(fanarts)"
+}	
+
+Select.screentime
+{
+	ScreenOrNot
+}
+
+ScreenOrNot : all
+{
+	"\0\s[5]\b2Watching time?\n\n[half]"
+
+	"\![*]\q[Watching time!,watchon]\n"
+	
+	"\![*]\q[Nevermind,CANCEL]\n"
+}	
+
+Select.watchon
+{
+      "\1\s[161]\0\s[162]"
+	  watchmode = "on"
+}
+
+Select.watchoff
+{
+	"\1\s[15]\0\s[5]That was great!"
+	watchmode = "off"
+}
+	
+
+	
+//*********************Advanced User Info*******************************
+//Some of you may be wondering why some of these Select.options lead to another function. Why not just put the config menu coding under Select.configmenu, instead of linking to TalkConfig?
+//Basically any function that's preceded with Select. is limited in its complexity and can only be called within its own .dic file in my experience. Why should you care, you ask? Well, if you're going to link to this function any other way, such as linking it in other .dic files or as a page in a menu, it needs to be a stand-alone function so it can be properly called. I'm pretty sure.
+//The basic jist is this; if you're going to reuse whatever it is the option leads to, you should make it its own function. Otherwise, you can leave it in Select.option. As a rule of thumb I'd probably put any complicated stuff in its own function, then use the Select.option to call the full function as you can see above. Simple dialogue responses to a choice can stay as a Select.option though (Like "Do you like going to raves and partying? Yes/No"). Study what stays as a Select.option and what links to another Function as we go through the file.
+//***********************************************************************
+
+//--TalkConfig
+//This menu allows the user to change their name and other information, as well as put in their birthday and change how often the ghost speaks. You can restructure how this looks if you want, but it's perfectly functional as is. You can of course change the dialogue though if you like.
+//I commented out birthday and pronoun options, you can uncomment them if you want to add them back. They are optional! It's up to you if you want those features or not.
+
+TalkConfig : all
+{
+	
+	"\0\b[2]\_q\" 
+	//This bit of dialogue sets up a large balloon and a quick session, like above, so all the text will appear immediately. The rest is formatted to display the information and options to change it. I wouldn't touch any of it if you don't know what you're doing.
+	//I'll briefly explain the font tags I used here. \f[bold,1] turns bold on, \f[bold,0] turns it off, not unlike a <b> tag. \f[sup,1] turns superscript on (making it tiny and above the text) and \f[sup,0] turns it off. I touch on these tags in the walkthrough on SakuraScript.
+	
+	
+	
+	"f[bold,1]Your name:\f[bold,0] %(username) \f[sup,1](\q[Change it?,TEACHNAME])\f[sup,0]\n"
+	
+	
+	//If you want your user to set their pronouns, you can uncomment this menu option by removing the two slashes in front. Read more on the walkthrough about commenting.
+	
+	"\f[bold,1]Your pronouns:\f[bold,0] %(heshe)/%(himher)/%(hisher) \f[sup,1](\q[Change them?,TEACHPRONOUN])\f[sup,0]\n"
+	
+	
+	//If you want your user to be able to set their birthday, you can uncomment this menu option.
+	
+	"\f[bold,1]Your birthday:\f[bold,0] %(birthdayprint) \f[sup,1](\q[Change it?,TEACHBDAY])\f[sup,0]\n"
+	
+	
+	
+	"\n\f[bold,1]Talk Rate:\f[bold,0] - every %(talktime) \f[sup,1](\q[Change it,talkinter])\f[sup,0]\n\n"
+	
+	
+	
+		{
+		"\![*]Enable Uninstall? (NOW : %(deleteshitai))\n\q[ON,deleteon] \q[OFF,deleteoff]\n\n[half]\n"
+		}
+		
+	
+	
+	"\![*]\q[Back to the menu,BACKTOMENU]\e"
+}
+
+
+
+
+// ______                                                 _____ _             _   
+// | ___ \                                               /  ___| |           | |  
+// | |_/ / __ ___  _ __   ___  _   _ _ __  ___   ______  \ `--.| |_ __ _ _ __| |_ 
+// |  __/ '__/ _ \| '_ \ / _ \| | | | '_ \/ __| |______|  `--. \ __/ _` | '__| __|
+// | |  | | | (_) | | | | (_) | |_| | | | \__ \          /\__/ / || (_| | |  | |_ 
+// \_|  |_|  \___/|_| |_|\___/ \__,_|_| |_|___/          \____/ \__\__,_|_|   \__|
+                                                                               
+                                                                               
+
+
+
+//This and the next few set up the pronouns, as you can see by the linkedfunction names. You can replace "\0\s[0]What pronouns do you want?" with your own dialogue if you prefer, but leave the rest of it alone.
+//If you're not going to add this feature, you can ignore these. I marked where the pronoun section begins and ends with some ascii banners. :3
+
+Select.TEACHPRONOUN : all
+{
+	"\0\s[0]What are your pronouns?\w5\n\n[half]\_q"
+	"\![*]\q[He-His-Him,choicemasc]\n"
+	"\![*]\q[She-Her-Her,choicefem]\n"	
+	"\![*]\q[They-Their-Them,choiceneither]\e"
+}
+
+Select.choicemasc
+{
+	presuffix = "masculine"
+	himher = "him"
+	heshe = "he"
+	hisher = "his"
+	hesshes = "he's"
+	--
+	"\0\s[5]He-Him! Understood!\e"
+	//Leave the part above the double dashes alone. You can replace the snip of dialogue however with whatever you like.
+}
+
+Select.choicefem
+{
+	presuffix = "feminine"
+	himher = "her"
+	heshe = "she"
+	hisher = "her"
+	hesshes = "she's"
+	--
+	"\0\s[5]She-Her! Understood!\e"
+	//as above, you can also replace this dialogue.
+}
+
+Select.choiceneither
+{
+	presuffix = "undefine"
+	himher = "them"
+	heshe = "they"
+	hisher = "their"
+	hesshes = "they're"
+	--
+	"\0\s[5]They-Them! Understood!\e"
+	//and this one.
+}
+
+//Here are some examples of these envelopes in use.
+//"%(heshe) left that there."
+//"%(hisher) work is really cool."
+//"I'll ask %(himher) later."
+//"%(hesshes) really good at it."
+
+//These envelopes only apply if the pronouns are set! If the user can't set their pronouns, that then you don't have to think about these envelopes.
+
+
+
+// ______                                                 _____          _ 
+// | ___ \                                               |  ___|        | |
+// | |_/ / __ ___  _ __   ___  _   _ _ __  ___   ______  | |__ _ __   __| |
+// |  __/ '__/ _ \| '_ \ / _ \| | | | '_ \/ __| |______| |  __| '_ \ / _` |
+// | |  | | | (_) | | | | (_) | |_| | | | \__ \          | |__| | | | (_| |
+// \_|  |_|  \___/|_| |_|\___/ \__,_|_| |_|___/          \____/_| |_|\__,_|
+                                                                        
+                                                                        
+
+
+
+
+
+
+//These two options toggle whether or not you can delete your ghost. Leave them alone.
+
+Select.deleteon
+{
+	deleteshitai = "ON"
+	TalkConfig
+}
+
+Select.deleteoff
+{
+	deleteshitai = "OFF"
+	TalkConfig
+}
+
+
+
+
+  // ____  _      _   _         _                       ____  _             _   
+ // | __ )(_)_ __| |_| |__   __| | __ _ _   _          / ___|| |_ __ _ _ __| |_ 
+ // |  _ \| | '__| __| '_ \ / _` |/ _` | | | |  _____  \___ \| __/ _` | '__| __|
+ // | |_) | | |  | |_| | | | (_| | (_| | |_| | |_____|  ___) | || (_| | |  | |_ 
+ // |____/|_|_|   \__|_| |_|\__,_|\__,_|\__, |         |____/ \__\__,_|_|   \__|
+                                     // |___/                                   
+
+
+//This next set of functions handles inputting the user's birthday. If you don't want this to be a feature, you can ignore all of this. I marked where the birthday code starts and ends for you with some good old-fashioned ascii banners. :3
+
+Select.TEACHBDAY
+	{	
+		"\0\s[0]What month were you born? \w8Name or number is fine.\![open,inputbox,OnUserBornMonth,-1]\e"
+		
+		//You can replace the dialogue up to the \![open,inputbox,OnUserBornMonth,-1] tag, leave that alone. You'll need the input box to get the information.
+		
+		//*********************Advanced User Info*******************************
+		//I also touched on this in bootend.dic and explained it in the walkthrough page on coding, but I'll also go into it here. I'm going to break down the tag there at the end of the sentence so you know what it's doing. Basically, \! means a function is going to happen, open tells it to open something, inputbox tells it to open an input box, and OnUserBornMonth is the function the input box will be linked to, which is just below here. -1 means the input box should not time out. If you want to add input boxes to some new function for whatever reason, you should follow this basic format.
+		//On a related note, you can raise any function at the end of any piece of dialogue by using this format - \![raise,InsertFunctionName]. This can be handy for testing things if the function is hard to get to run otherwise.
+		//***********************************************************************
+	}
+
+//--OnUserBornMonth
+//This takes the value that the user put into the input box above and evaluates it. Most of this you won't have to touch, but I'll explain what it's doing anyway. I'll point out where you can change the dialogue.
+
+OnUserBornMonth
+{
+	_tempmonth = TOSTR(reference0) //this stores what the user put in as a variable called _tempmonth
+	_tempmonth = TOLOWER(_tempmonth) //changes it to lowercase
+	
+	//this is attaching the right value to the input from the user
+	if _tempmonth == "january" || _tempmonth == "1" {bornmonth = 1; bornmonthprint = "January"}
+	elseif _tempmonth == "february" || _tempmonth == "2" {bornmonth = 2; bornmonthprint = "February"}
+	elseif _tempmonth == "march" || _tempmonth == "3" {bornmonth = 3; bornmonthprint = "March"}
+	elseif _tempmonth == "april" || _tempmonth == "4" {bornmonth = 4; bornmonthprint = "April"}
+	elseif _tempmonth == "may" || _tempmonth == "5" {bornmonth = 5; bornmonthprint = "May"}
+	elseif _tempmonth == "june" || _tempmonth == "6" {bornmonth = 6; bornmonthprint = "June"}
+	elseif _tempmonth == "july" || _tempmonth == "7" {bornmonth = 7; bornmonthprint = "July"}
+	elseif _tempmonth == "august" || _tempmonth == "8" {bornmonth = 8; bornmonthprint = "August"}
+	elseif _tempmonth == "september" || _tempmonth == "9" {bornmonth = 9; bornmonthprint = "September"}
+	elseif _tempmonth == "october" || _tempmonth == "10" {bornmonth = 10; bornmonthprint = "October"}
+	elseif _tempmonth == "november" || _tempmonth == "11" {bornmonth = 11; bornmonthprint = "November"}
+	elseif _tempmonth == "december" || _tempmonth == "12" {bornmonth = 12; bornmonthprint = "December"}
+	
+	else //if the month isn't a valid month, like 32 or something.
+	{
+			"\0\s[0]That's not a month?\w8\nTry again."
+			--
+			"\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\e"
+			
+			//You can replace this dialogue in the first line. You need to leave the tag for the input box so they can put in a correct month. That last tag there for ![set,balloontimeout,-1] makes it so the input box won't time out if the user takes too long.
+	}
+	--
+	//If it's a valid month
+	
+	"\0\s[0]So you were born in %(bornmonthprint).\n\w8What day was it?"
+	--
+	"\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\e"
+	
+	//Here you can see the use of a bornmonthprint envelope to show the user what month they put in. Notice that it opens an inputbox at the end the same way the one above did. You can replace the dialogue in the first line just as with above.
+}
+
+//This adds an appropriate suffix to the number for the day. No need to mess with this.
+
+Printday
+{
+	if bornday == 1 || bornday == 21 || bornday == 31
+	{	"%(bornday)st"	}
+	elseif bornday == 2 || bornday == 22
+	{	"%(bornday)nd"	}
+	elseif bornday == 3 || bornday == 23
+	{	"%(bornday)rd"	}
+	else
+	{	"%(bornday)th"	}
+}	
+
+//--OnUserBornDay
+//This is much like the above function OnUserBornMonth. It'll take the value the user put in for the day and analyze it. Again, there'll be comments explaining how it works, but all you really need to do is change the dialogue appropriately. I'll point out where you can add new dates to check for.
+
+OnUserBornDay
+{
+	_tempday = reference0 //storing the input in _tempday
+	_tempday = TOLOWER(_tempday) //changes it to lowercase
+	_tempday = REPLACE(_tempday,"st","") //if the user types something like 2nd, 3rd, etc, this will make it just the number. It'll just add the suffix back later on the one that actually shows.
+	_tempday = REPLACE(_tempday,"nd","")
+	_tempday = REPLACE(_tempday,"rd","")
+	_tempday = REPLACE(_tempday,"th","")
+	_tempday = TOINT(_tempday) //Converts it to an integer
+	
+	if ((bornmonth == 1 || bornmonth == 3 || bornmonth == 5 || bornmonth == 7 || bornmonth == 8 || bornmonth == 10 || bornmonth == 12) && _tempday >= 1 && _tempday <= 31) || (bornmonth == 2 && _tempday >= 1 && _tempday <= 29) || ((bornmonth == 4 || bornmonth == 6 || bornmonth == 9 || bornmonth == 11) && _tempday >= 1 && _tempday <= 30) //This ugly function checks if the day falls into a valid range. If it does, we set some variables and continue down.
+	{
+		bornday = _tempday
+		borndayprint = Printday
+		userbirthday = "%(bornmonth)month %(bornday)day"
+		birthdayprint = "%(bornmonthprint) %(borndayprint)"
+		
+		"%(birthchecked)"
+		//Mostly defining envelopes and values in here. No need to touch any of this! Eagle-eyed readers will notice the new envelope birthchecked on its own line like a tiny king. We'll get to that momentarily, but pay it no mind for now.
+	}
+	else //If the day isn't valid, like the 10046th or something, this will open the input box again and have a \e so the dialogue below doesn't play. You can replace the dialogue in the first line here.
+	{
+		"\0\s[0]As far as I know, that's not a day of the month?\w8\nTry again."
+		--
+		"\![open,inputbox,OnUserBornDay,-1]\e"
+	}	
+}
+
+//--birthchecked
+//This is the new envelope you saw me point out above. As you can see here, you can actually call dialogue in a function with an envelope, even when it has if and else statements like here! Which can be pretty handy. Again, more on envelopes in word.dic. Creative ghostmakers can find handy ways to exploit this, I'm sure.
+
+birthchecked
+{
+	if userbirthday == dayslot //if today is the user's birthday
+		{
+			"\0\s[5]It's your birthday!\w8\1\s[55]\w8\0\s[0]\n\n[half]Make sure to have a good day!\e"
+			//replace this dialogue with whatever you like
+		}
+	elseif userbirthday == "12month 25day"
+		{
+			"\0\s[0]You were born on Christmas?\w8\1\s[55]\w5\0\s[5]\w8\That's so cool...\0\s[9]\n\DOUBLE PRESENTS!\e"
+		}	
+	elseif userbirthday == "10month 31day"
+		{
+			"\0\s[0]An halloween birthday?\w8\1\s[55]\w5\0\s[5]\w8\n\That's so cool...\0\s[9]\n\SPOOKY BIRTHDAY!\e"	
+		}	
+	elseif userbirthday == "4month 1day"
+		{
+			"\0\s[0]You were born on April's fool?\w8\1\s[55]\w5\0\s[5]\n\w8\That's so cool...\0\s[9]\n\PUNNY BIRTHDAY!\e"
+		}
+	elseif userbirthday == "3month 17day"
+		{
+			"\0\s[0]Hehe, you were born the same day as my creator?\w8\1\s[55]\w5\0\s[5]\w8\n\That's so cool...\0\s[9]\n\DOUBLE BIRTHDAY!\e"
+		}
+	elseif userbirthday == "12month 12day"
+		{
+			"\0\s[0]Oh? You were born the same day as Mu!\w8\1\s[56]\w5\0\s[5]\w8\n\That's so cool...\0\s[0]\n\TWINSIES!!!\1\s[16]\e"
+		}
+		
+	elseif userbirthday == "2month 19day"
+		{
+			"\0\s[0]Oh? You were born the 19th of february?\w8\1\s[54]\w5\0\s[5]\w8\n\That's so cool...\0\s[9]\n\ME TOO!!!\1\s[16]\e"
+		}
+	else //if the birthday is not listed above.
+		{
+			"\0\s[0]So your birthday is %(bornmonthprint) %(borndayprint). We'll make sure to remember!\e"
+			//note the use of envelopes to display the newly set birthday properly. You can replace this dialogue as well, and you can use %(bornmonthprint) and %(borndayprint) to display the month and day in the new dialogue, if you want.
+		}
+}
+
+
+
+  // ____  _      _   _         _                       _____           _ 
+ // | __ )(_)_ __| |_| |__   __| | __ _ _   _          | ____|_ __   __| |
+ // |  _ \| | '__| __| '_ \ / _` |/ _` | | | |  _____  |  _| | '_ \ / _` |
+ // | |_) | | |  | |_| | | | (_| | (_| | |_| | |_____| | |___| | | | (_| |
+ // |____/|_|_|   \__|_| |_|\__,_|\__,_|\__, |         |_____|_| |_|\__,_|
+                                     // |___/                             
+
+
+
+
+
+
+
+//--Talk Rate
+//This is when the user chooses to adjust the talk rate in the config menu. The talk rate is how often the ghost will read some dialogue from aitalk.dic.
+
+
+Select.talkinter : all
+ 	{
+ 		"\0\s[0]\b2How often should we speak?\w8\n\n[half]The interval is currently set to %(talktime)."
+		//note the new envelope here for %(talktime). You'll see it again in a second. You can replace the dialogue above with whatever you like, just make sure it ends with ./ and not \e.
+ 		"\0\n\n[half]"
+ 		"\![*]\q[Every 30 seconds,TALKMAX]\n"
+		"\![*]\q[Every minute,TALKHIGH]\n"
+ 		"\![*]\q[Every 3 minutes,TALKNORMAL]\n"
+		"\![*]\q[Every 5 minutes,TALKPOOR]\n"
+ 		"\![*]\q[Don't speak,TALKNONE]\n\n[half]"
+		"\![*]\q[Don't change,TalksTill]\e"
+	}
+
+//If the user doesn't want to change the rate. You can change all of the dialogue in any of these options if you want to reflect the choice the user made. You TECHNICALLY could also change the value in talktime to reflect some other way of measuring time but I wouldn't recommend it, it'd just be confusing I'm sure.
+Select.TalksTill
+	{
+		"\0\s[0]No change to the talk rate.\e"
+	}
+
+//If the user chooses every 30 seconds.
+Select.TALKMAX
+	{
+ 		talktime = "30 seconds" //this sets up the envelope properly
+		aitalkinterval = 30 //this changes the actual rate
+		
+ 		"\0\s[0]We will speak every 30 seconds.\e"
+	}
+
+//If the user chooses every minute.
+Select.TALKHIGH
+	{
+ 		talktime = "minute"
+		aitalkinterval = 60
+		
+ 		"\0\s[0]We will speak every minute.\e"
+	}
+
+//If the user chooses every three minutes.
+Select.TALKNORMAL
+	{
+ 		talktime = "3 minutes"
+		aitalkinterval = 180
+		
+ 		"\0\s[0]We will speak every three minutes.\e"
+	}
+
+//If the user chooses every five minutes. This is the default rate the ghost will start up in, as seen in bootend.dic.
+Select.TALKPOOR
+	{
+ 		talktime = "5 minutes"
+		aitalkinterval = 300
+		
+ 		"\0\s[0]We will speak every five minutes.\e"
+	}
+
+//If the user chooses to not have them speak. This is one case where you MIGHT want to make talktime equal something else, if you have a snappier way of saying the ghost won't talk. Make sure it flows well in your menus though, since it will be displayed in your config menu.
+Select.TALKNONE
+	{
+ 		talktime = "...actually we won't talk at all :<"
+		aitalkinterval = 0
+		
+		"\0\s[0]We will not speak.\e"
+	}
+
+
+
+//This is when the user chooses to change their name. It's linked to the functions outlined in nameteach.dic. Nothing to touch here.
+Select.TEACHNAME
+	{
+		OnTeachName	
+	}
+
+
+//If the user selects cancel in a menu. Replace as you like, or just leave them blank.
+Select.CANCEL
+	{
+		"\0\s[0]Changed your mind?\nThat's okay.\e"
+		
+		"\0\s[0]Going back at full speed!\e"
+		
+		"\0\s[0]Talk to you later!\e"
+ 	}
+
+	
+//In the MenuRun function above, if someone selects Functions (linked to dosomething), it will take them here to Select.dosomething.
+
+//If you want to have your ghost pick from multiple intro lines for this menu, you can uncomment FunctionMenuIntros here, and add in dialogue as you like.
+
+FunctionMenuIntros : nonoverlap
+{	
+		//I mentioned this above in MenuRun, but you can have a set of multiple different responses that may randomly appear when the menu is opened. Try opening this menu yourself with the template to see how it works. The character will randomly choose one line as the intro. 
+		//If you don't want to deal with this, just delete the extra lines and leave one. Otherwise, replace the dialogue below as you like, but note that they don't end with \e here.
+		
+		"\0\s[0]\b2What can I do to help you?\n\n"
+ 		"\0\s[0]\b2Here we are?\n\n"
+		"\0\s[0]\b2What's that?\n\n"	
+}
+
+Select.dosomething : all
+{
+ 		FunctionMenuIntros	
+		//this line ^ calls one of the intros above. If you are using the extra intros, you can uncomment this line.
+		
+		//the -- splits the intros and the menu choices
+		--
+		
+		//the actual menu options.
+		
+ 		"\![*]\q[Open Calendar,CALENDAR]\n"
+		"\![*]\q[Check Email,MailCheck]\n"
+		"\![*]\q[Open SSP Preferences,sspconfig]\n"
+		
+		"\![*]\q[Empty Recycle Bin,ChoiceGarbagecan]\n"
+		//I commented out the Empty Recycle Bin one because that one will need some tweaks to the dialogue to work for every ghost, since it uses Girl and Triangle's names. If you want your ghost to have this feature, uncomment this and fill out the corresponding dialogue below for Select.ChoiceGarbageCan.
+		
+		"\![*]\q[System Information,ChoiceSystemInformation]\n\n"
+ 		"\![*]\q[Back to main menu,BACKTOMENU]\e"
+}
+
+//When the user clicks Open Calender. This will open the calender function of SSP, an in-built feature that you don't have to worry about in the least. You don't have to write dialogue here if you don't want to, the template's default dialogue will handle it, but it is an option.
+Select.CALENDAR
+{
+	"\0\s[0]Woooo, calendar!\w8\![open,calendar]\e"
+	
+	//You can replace the dialogue here up to the \!.
+	//Advanced users, can you break it down yet? It's basically just using \! to open calender.exe or dll or whatever SSP uses to make it happen.
+}
+
+//When the user chooses SSP preferences. This will open the same window that shows up if you right click your ghost and go to Utilities - Preferences. You don't have to write dialogue here if you don't want to, the template's default dialogue will handle it, but it is an option.
+Select.sspconfig
+{
+	"\0\s[0]Opening the SSP config menu.\w8\![open,configurationdialog]\e"
+	
+	//Again, you can replace up to the \! tag.
+}
+
+
+//If the user chooses to empty the recycle bin. Make sure to uncomment the "Empty Recycle Bin" option above in the Select.dosomething menu if you want to include this feature.
+
+Select.ChoiceGarbagecan
+{
+	_gomicheck = FUNCTIONEX("gomi.dll", "-n")	//Don't touch this line. for those curious, it's referencing a SAORI, which are optional user-made plug-in dlls you can download to enable different functions on your ghost. gomi.dll is one included with this template. All SAORI are in Japanese (maybe Korean or Chinese as well idk) and many have disappeared by now, so don't concern yourself very much with SAORI. They're for skilled developers, mostly.
+	
+	if _gomicheck == 0 //If the recycle bin is empty.
+	{
+		"\0\s[0]Mu, I'm going to check the recycle bin.\w8\1\s[19]\w8\w8\0\s[-1]\w8\w8\w8\w8\w8\0\s[0]\cIt was empty.\e"
+		
+		//This isn't the usual flat template dialogue, mostly because I wanted to show that this is a good place to use s[-1], which I covered in the walkthrough file. You can have your ghost disappear momentarily like they're going to check your recycle bin, then come back. \c clears the ghost's balloon of text. Replace dialogue as you desire.
+	}
+	elseif _gomicheck >= 1 //If the recycle bin is full.
+	{
+		"\0\s[0]Mu, I'm going to check the recycle bin.\w8\1\s[19]\w8\w8\0\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\0\s[0]\cDone.\e"
+		
+		// "\0\s[0]This is the second recycle bin emptying dialogue.\w8\1\s[19]I'm going.\w8\w8\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\1\s[10]\cDone.\e"
+		
+		//Somewhat similar to the above, but notice the \![raise],OnGarbagecanEmpty] tag in there. That's what actually empties the recycle bin, so make sure you don't delete that tag. Otherwise, replace the dialogue as you want.
+		//As you can see, you can have multiple pieces of dialogue in here, just like you can for many other functions scattered through the .dic files. If you only want the one, just delete the others, or if you want to add more, just copy and paste and write new dialogue as it comes to you. This applies to when the recycle bin is empty as well.
+	}
+}
+
+
+//This is for the SAORI, don't touch it.
+OnGarbagecanEmpty
+{
+	_gomi = FUNCTIONEX("gomi.dll", "-f")
+}
+
+//This is when the user chooses System Information. Don't touch any of this either. For those curious though, note that this is done using another SAORI, this time saori_cpuid.dll.
+Select.ChoiceSystemInformation
+{
+	os_name = FUNCTIONEX("saori_cpuid.dll","os.name")
+	os_version = FUNCTIONEX("saori_cpuid.dll","os.version")
+	cpu_name = FUNCTIONEX("saori_cpuid.dll","cpu.name")
+	cpu_clockex = FUNCTIONEX("saori_cpuid.dll","cpu.clockex")
+	"/
+	\0\s[0]\b[2]/
+	\_q\f[bold,1]OS:\f[bold,0] %(os_name) %(os_version)\n/
+	\f[bold,1]Memory Load:\f[bold,0] %(memoryload)%\n/
+	\f[bold,1]Physical Memory:\f[bold,0] %(memoryavailphys) KB\n/
+	\f[bold,1]CPU:\f[bold,0] %(cpu_name) %(cpu_clockex)MHz\n/
+	\f[bold,1]Ukagaka:\f[bold,0] %property[baseware.version]/
+	\e"
+}
+	
+//This is when the user chooses to check their email. The rest of this function plays out in etc.dic. You can leave this alone.
+Select.MailCheck
+	{
+		"\![biff]\e"
+	}
+
+
+	
+//---- OnChoiceTimeout ---------------------------------------------------------
+//If the user is given a menu with choices, but doesn't pick one of the choices, it will eventually time out. At that point, they will say this dialogue. Replace with whatever you like, or leave it blank.
+
+OnChoiceTimeout
+ {
+	if watchmode == "on"
+	{
+		"\1\s[161]\0\s[162]Hmm"
+	}
+	else
+	"\0\s[0]Let's do this later.\e"
+ }
+
+ 
+//---- Secondary Character Menu ---------------------------------------------------------
+//This section has to do with the menu for the second character. If you don't want your second character to have a menu, you can just delete to the end of the file. Advanced users, you can also move the menu options from here to the main character's menu instead and then delete it, if you want to keep these.
+
+KeroMenuIntros : nonoverlap
+{
+	"\1\s[10]\b[2]"
+	"\1\s[15]\b[2]"
+	"\1\s[16]\b[2]"
+	
+	//You've seen so far that you can set up multiple options for menu introductions. You can also set up multiple poses to match up to multiple dialogue. So for example, when you open Triangle's menu, he may randomly do any of these three poses, and randomly choose from any of the four dialogue options below, before continuing with his menu. Make a close note of the -- dashes breaking these up.
+	//if you aren't interested in such tomfoolery, you can cut them each down to one line.
+	
+ 	--
+	
+	""
+ 	""
+ 	""
+ 	""
+}
+
+OpenKeroMenu : all
+ {
+	 //this calls the intros above
+	KeroMenuIntros
+
+	//this splits the intros from the menu options
+	--
+	
+	//these are the menu options
+	"\n"
+	"\![*]\q[Show me a drawing!,drawingshowing]\n\n[half]"
+
+	"\![*]\q[Update,keroupdatecheck]\n"
+ 	"\![*]\q[Bug report,bugreport]\n\n"
+	
+	//"\![*]\q[Test variable,testvariable]\n\n"
+	//When you are done with the test variable, aka your ghost is finished or you just don't want it showing up when you publish your ghost beta or whatevs, simply add two // slashes in front of "\![*]\q[Test variable,testvariable]\n\n" to comment the line out. In Notepad++, it will turn green. When you want to use it again, erase the two slashes to turn it back to normal.
+	
+	"\![*]\q[Nothing,keroCANCEL]\e"
+}
+
+//There are no real set things for the second character to do, really. You can mostly add whatever functions you want to them, their menu is totally free reign. In mine for example, Hunter has some games, a pseudo-FAQ for users, a bug report, an update option, and most importantly, a test variable. A lot of that is fairly complicated though, so I won't get into it here. Advanced Users can pick up Hunter and Smoker and study their menu.dic to see how I did it though, and those who read the coding page of the walkthrough and want to make their own functions can feel free to add them here. 
+//For the purposes of this simple template, I'll include two options that may come in handy - an update option and a bug report option, as well as the test variable.
+
+//If you click cancel. Replace dialogue as you want.
+Select.keroCANCEL
+{
+	"\1\s[10]\e"
+}
+
+Select.drawingshowing
+{
+"%(drawingpose)"
+}
+
+
+//This is when they select bug report. This is mostly meant to briefly give the user information about you, the creator, and how to report a problem to you. This can be handy if the person forgot where they got their ghost or how to contact you. Add whatever info you like here.
+Select.bugreport
+{
+"\0\s[0]Something's wrong? \w5\n\Report bugs to blue.bluepallete@gmail.com.\w5\nOr send a message through my blog's creator on tumblr.\w5\nWe were downloaded from \_a[https://bluepallilworld.tumblr.com]here\_a.\e"
+}
+
+//When clicked, this will automatically tell the ghost to check for updates. More detail on updates in etc.dic. You can leave this alone.
+Select.keroupdatecheck
+{
+	"\1\s[10]\![updatebymyself]\e"
+}
+
+//--Test Variable --------------------------------------------------------
+//I briefly mentioned the test variable in bootend.dic and possibly in etc.dic as well, I'm not sure. What exactly is the test variable? Basically, it's a place you can plug in anything you want to test out. While you can use Script Input to test most of your ghost's dialogue, there are some lines it just can't do, and it can't help you test choices. But the test variable can!
+//You can also use this to test functions as I mentioned above by adding \![raise,function] at the end of it, although you can do this with Script Input as well. Advanced Users, the test variable is also great for testing out any new stuff you may add to your ghost, like mode settings, item values, functions, raising or lowering numbers, what have you, particularly if you have a bunch you want to change all at once.
+
+//It is ALWAYS A GOOD IDEA to test your dialogue! If you won't check it with the test variable, at least test it with Script Input! It'll save you so much trouble!
+
+//Select.testvariable
+//{
+//	"\1\s[10]Testing!\e"
+//}
+
+// OnDaychecked
+// {
+	// if dayslot == 1 //if today is the user's birthday
+		// {
+			// "the 1st"
+		// }
+	// elseif dayslot == 2
+		// {
+			// "the 2nd"
+		// }	
+	// elseif dayslot == 3
+		// {
+			// "the 3rd"
+		// }	
+	// elseif dayslot == 4
+		// {
+			// "the 4th"
+		// }
+	// elseif dayslot == 5
+		// {
+			// "the 5th"
+		// }
+	// elseif dayslot == "6day"
+		// {
+			// "the 6th"
+		// }
+		
+	// elseif dayslot == "7day"
+		// {
+			// "the 7th"
+		// }
+	// elseif dayslot == "8day"
+		// {
+			// "the 8th"
+		// }
+	// elseif dayslot == "9day"
+		// {
+			// "the 9th"
+		// }
+	// elseif dayslot == "10day"
+		// {
+			// "the 10th"
+		// }
+	// elseif dayslot == "11day"
+		// {
+			// "the 11th"
+		// }
+	// elseif dayslot == "12day"
+		// {
+			// "the 12th"
+		// }
+	// elseif dayslot == 13
+		// {
+			// "the 13th"
+		// }
+	
+// }
